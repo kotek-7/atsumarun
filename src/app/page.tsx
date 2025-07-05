@@ -89,11 +89,17 @@ export default function Home() {
       // Ctrl+Click (Cmd+Click on Mac): 個別選択切り替え
       option.selected = !option.selected;
     } else {
-      // 通常のクリック: 単一選択
-      for (let i = 0; i < selectElement.options.length; i++) {
-        const optionToUpdate = selectElement.options[i];
-        if (optionToUpdate) {
-          optionToUpdate.selected = i === index;
+      // 通常のクリック: 選択/解除の切り替え
+      if (option.selected) {
+        // 既に選択されている場合は解除
+        option.selected = false;
+      } else {
+        // 選択されていない場合は、他を全て解除して自分を選択
+        for (let i = 0; i < selectElement.options.length; i++) {
+          const optionToUpdate = selectElement.options[i];
+          if (optionToUpdate) {
+            optionToUpdate.selected = i === index;
+          }
         }
       }
     }
