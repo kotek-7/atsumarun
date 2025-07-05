@@ -104,6 +104,7 @@ export default function Home() {
     setSelectedDateOptionIndexes(selectedIndexes);
   };
 
+
   const handleRemoveDateOption = (index: number) => {
     setEventData(prev => ({
       ...prev,

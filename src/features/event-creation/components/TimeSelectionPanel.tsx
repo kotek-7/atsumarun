@@ -78,11 +78,12 @@ export const TimeSelectionPanel = ({ selectedDateIndexes, onTimeChange }: TimeSe
       )}
 
       <div className={`${allTimes.length > 0 ? 'border-t' : ''} pt-4`}>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="add-time-input" className="block text-sm font-medium text-gray-700 mb-2">
           時刻を追加
         </label>
-        <div className="flex gap-2">
+        <form onSubmit={(e) => { e.preventDefault(); addCustomTime(); }} className="flex gap-2">
           <input
+            id="add-time-input"
             type="text"
             value={newTime}
             onChange={(e) => setNewTime(e.target.value)}
@@ -90,14 +91,13 @@ export const TimeSelectionPanel = ({ selectedDateIndexes, onTimeChange }: TimeSe
             placeholder="例: 9:00, 午前中, ランチタイム"
           />
           <button
-            type="button"
+            type="submit"
             onMouseDown={(e) => e.preventDefault()} // Prevent focus loss
-            onClick={addCustomTime}
             className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm"
           >
             追加
           </button>
-        </div>
+        </form>
         
       </div>
     </div>
