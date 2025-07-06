@@ -39,8 +39,7 @@ export const Calendar = ({ onDateSelect, selectedDates }: CalendarProps) => {
   const dayNames = ["日", "月", "火", "水", "木", "金", "土"];
   
   const handleDateClick = (day: number) => {
-    const selectedDate = new Date(year, month, day);
-    const dateString = selectedDate.toISOString().split('T')[0];
+    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     onDateSelect(dateString);
   };
   
@@ -63,8 +62,7 @@ export const Calendar = ({ onDateSelect, selectedDates }: CalendarProps) => {
   };
   
   const isSelected = (day: number) => {
-    const date = new Date(year, month, day);
-    const dateString = date.toISOString().split('T')[0];
+    const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
     return selectedDates.includes(dateString);
   };
 

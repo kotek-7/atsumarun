@@ -9,7 +9,7 @@ interface DateOptionsListProps {
   onRemoveDateOption: (index: number) => void;
   onTimeChange: (index: number, time: string) => void;
   onDateChange?: (index: number, date: string) => void;
-  selectRef: React.RefObject<HTMLSelectElement>;
+  selectRef: React.RefObject<HTMLSelectElement | null>;
   onSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
