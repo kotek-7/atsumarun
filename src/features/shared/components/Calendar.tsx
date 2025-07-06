@@ -104,11 +104,11 @@ export const Calendar = ({ onDateSelect, selectedDates }: CalendarProps) => {
                 type="button"
                 onClick={() => handleDateClick(day)}
                 disabled={isPast(day)}
-                className={`w-full h-full flex items-center justify-center text-sm rounded hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full h-full flex items-center justify-center text-sm rounded focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   isToday(day)
-                    ? 'bg-blue-600 text-white font-semibold'
+                    ? 'bg-blue-600 text-white font-semibold hover:bg-blue-700'
                     : isSelected(day)
-                    ? 'bg-green-100 text-green-800 font-semibold border-2 border-green-500'
+                    ? 'bg-green-100 text-green-800 font-semibold border-2 border-green-500 hover:bg-green-200'
                     : isPast(day)
                     ? 'text-gray-400 cursor-not-allowed'
                     : 'text-gray-700 hover:bg-blue-50'

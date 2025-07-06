@@ -1,41 +1,177 @@
 "use client";
 
-import { DateOption } from "@/features/shared/types";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import { DateOption } from "@/features/shared/types";
 
 interface DateOptionsListProps {
   dateOptions: DateOption[];
-  selectedDateOptionIndexes: number[];
-  onDateOptionClick: (index: number, event: React.MouseEvent) => void;
+  setDateOptions: (dateOptions: DateOption[]) => void;
   onRemoveDateOption: (index: number) => void;
   onTimeChange: (index: number, time: string) => void;
   onDateChange?: (index: number, date: string) => void;
-  selectRef: React.RefObject<HTMLSelectElement | null>;
-  onSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  onReorderDateOptions: (startIndex: number, endIndex: number) => void;
+  onSelectionChange: (selectedIndexes: number[]) => void;
 }
 
-export const DateOptionsList = ({
+export interface DateOptionsListRef {
+  selectAll: () => void;
+  deselectAll: () => void;
+  removeSelectedOptions: () => void;
+}
+
+export const DateOptionsListWithDrag = forwardRef<DateOptionsListRef, DateOptionsListProps>(({
   dateOptions,
-  selectedDateOptionIndexes,
-  onDateOptionClick,
+  setDateOptions,
   onRemoveDateOption,
   onTimeChange,
   onDateChange,
-  selectRef,
-  onSelectChange,
-  onReorderDateOptions
-}: DateOptionsListProps) => {
+  onSelectionChange
+}, ref) => {
+  const [selectedDateOptionIndexes, setSelectedDateOptionIndexes] = useState<number[]>([]);
+  const selectRef = useRef<HTMLSelectElement | null>(null);
+
+  // 選択状態の変更を親に通知
+  useEffect(() => {
+    onSelectionChange(selectedDateOptionIndexes);
+  }, [selectedDateOptionIndexes, onSelectionChange]);
+
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     
     const startIndex = result.source.index;
     const endIndex = result.destination.index;
     
-    if (startIndex !== endIndex) {
-      onReorderDateOptions(startIndex, endIndex);
-    }
+    if (startIndex === endIndex) return;
+
+    // 配列の並び替え処理をここで実行
+    const newOptions = Array.from(dateOptions);
+    const [reorderedItem] = newOptions.splice(startIndex, 1);
+    newOptions.splice(endIndex, 0, reorderedItem);
+
+    setDateOptions(newOptions);
+
+    // 選択状態も調整
+    const newSelectedIndexes = selectedDateOptionIndexes.map(oldIndex => {
+      if (oldIndex === startIndex) {
+        return endIndex;
+      } else if (startIndex < endIndex) {
+        if (oldIndex > startIndex && oldIndex <= endIndex) {
+          return oldIndex - 1;
+        }
+      } else {
+        if (oldIndex >= endIndex && oldIndex < startIndex) {
+          return oldIndex + 1;
+        }
+      }
+      return oldIndex;
+    });
+
+    setSelectedDateOptionIndexes(newSelectedIndexes);
   };
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOptions = Array.from(event.target.selectedOptions);
+    const selectedIndexes = selectedOptions.map(option => parseInt(option.value));
+    setSelectedDateOptionIndexes(selectedIndexes);
+  };
+
+  const handleDateOptionClick = (index: number, event: React.MouseEvent) => {
+    const selectElement = selectRef.current;
+    if (!selectElement || !selectElement.options) return;
+
+    const option = selectElement.options[index];
+    if (!option) return;
+
+    if (event.shiftKey) {
+      const lastSelected = selectedDateOptionIndexes[selectedDateOptionIndexes.length - 1] ?? 0;
+      const start = Math.min(lastSelected, index);
+      const end = Math.max(lastSelected, index);
+      
+      for (let i = start; i <= end; i++) {
+        const optionToSelect = selectElement.options[i];
+        if (optionToSelect) {
+          optionToSelect.selected = true;
+        }
+      }
+    } else if (event.ctrlKey || event.metaKey) {
+      option.selected = !option.selected;
+    } else {
+      if (option.selected) {
+        option.selected = false;
+      } else {
+        for (let i = 0; i < selectElement.options.length; i++) {
+          const optionToUpdate = selectElement.options[i];
+          if (optionToUpdate) {
+            optionToUpdate.selected = i === index;
+          }
+        }
+      }
+    }
+
+    const selectedOptions = Array.from(selectElement.selectedOptions);
+    const selectedIndexes = selectedOptions.map(opt => parseInt(opt.value));
+    setSelectedDateOptionIndexes(selectedIndexes);
+  };
+
+  const handleRemoveDateOptionInternal = (index: number) => {
+    // 親コンポーネントの削除処理を呼び出し
+    onRemoveDateOption(index);
+    
+    // 選択状態も調整
+    setSelectedDateOptionIndexes(prev => 
+      prev
+        .filter(i => i !== index)
+        .map(i => i > index ? i - 1 : i)
+    );
+  };
+
+  const selectAll = () => {
+    const selectElement = selectRef.current;
+    if (!selectElement || !selectElement.options) return;
+
+    for (let i = 0; i < selectElement.options.length; i++) {
+      const option = selectElement.options[i];
+      if (option) {
+        option.selected = true;
+      }
+    }
+
+    setSelectedDateOptionIndexes(Array.from({ length: dateOptions.length }, (_, i) => i));
+  };
+
+  const deselectAll = () => {
+    const selectElement = selectRef.current;
+    if (!selectElement || !selectElement.options) return;
+
+    for (let i = 0; i < selectElement.options.length; i++) {
+      const option = selectElement.options[i];
+      if (option) {
+        option.selected = false;
+      }
+    }
+
+    setSelectedDateOptionIndexes([]);
+  };
+
+  const removeSelectedOptions = () => {
+    if (selectedDateOptionIndexes.length === 0) return;
+    
+    const sortedIndexes = [...selectedDateOptionIndexes].sort((a, b) => b - a);
+    
+    sortedIndexes.forEach(index => {
+      onRemoveDateOption(index);
+    });
+    
+    setSelectedDateOptionIndexes([]);
+  };
+
+  // 外部からアクセスできるように参照を公開
+  useImperativeHandle(ref, () => ({
+    selectAll,
+    deselectAll,
+    removeSelectedOptions
+  }));
+
   return (
     <div>
       {/* 隠れたselect要素（ブラウザ標準の選択動作を担当） */}
@@ -44,7 +180,7 @@ export const DateOptionsList = ({
         multiple
         className="sr-only"
         value={selectedDateOptionIndexes.map(String)}
-        onChange={onSelectChange}
+        onChange={handleSelectChange}
       >
         {dateOptions.map((_, index) => (
           <option key={index} value={index}>
@@ -99,7 +235,7 @@ export const DateOptionsList = ({
                         }`}
                         onClick={(e) => {
                           e.stopPropagation();
-                          onDateOptionClick(index, e);
+                          handleDateOptionClick(index, e);
                         }}
                       >
                         {selectedDateOptionIndexes.includes(index) && (
@@ -135,7 +271,7 @@ export const DateOptionsList = ({
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            onRemoveDateOption(index);
+                            handleRemoveDateOptionInternal(index);
                           }}
                           className="text-red-600 hover:text-red-800 px-2 py-1"
                         >
@@ -153,4 +289,6 @@ export const DateOptionsList = ({
       </DragDropContext>
     </div>
   );
-};
+});
+
+DateOptionsListWithDrag.displayName = 'DateOptionsListWithDrag';
