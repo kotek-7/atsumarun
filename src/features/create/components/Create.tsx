@@ -4,13 +4,13 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar } from "@/features/shared/components/Calendar";
 import { TimeSelectionPanel } from "@/features/create/components/TimeSelectionPanel";
-import { DateOptionsList } from "@/features/create/components/DateOptionsList";
+import { DateOptionsList, DateOptionsListRef } from "@/features/create/components/DateOptionsList";
 import { EventData } from "@/features/shared/types";
 
 export default function Create() {
   const router = useRouter();
   const [selectedDateOptionIndexes, setSelectedDateOptionIndexes] = useState<number[]>([]);
-  const selectRef = useRef<HTMLSelectElement | null>(null);
+  const dateOptionsListRef = useRef<DateOptionsListRef>(null);
   const [eventData, setEventData] = useState<EventData>({
     title: "",
     description: "",
@@ -55,48 +55,7 @@ export default function Create() {
     });
   };
 
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOptions = Array.from(event.target.selectedOptions);
-    const selectedIndexes = selectedOptions.map(option => parseInt(option.value));
-    console.log("Select changed:", selectedIndexes);
-    setSelectedDateOptionIndexes(selectedIndexes);
-  };
-
-  const handleDateOptionClick = (index: number, event: React.MouseEvent) => {
-    const selectElement = selectRef.current;
-    if (!selectElement || !selectElement.options) return;
-
-    const option = selectElement.options[index];
-    if (!option) return;
-
-    if (event.shiftKey) {
-      const lastSelected = selectedDateOptionIndexes[selectedDateOptionIndexes.length - 1] ?? 0;
-      const start = Math.min(lastSelected, index);
-      const end = Math.max(lastSelected, index);
-      
-      for (let i = start; i <= end; i++) {
-        const optionToSelect = selectElement.options[i];
-        if (optionToSelect) {
-          optionToSelect.selected = true;
-        }
-      }
-    } else if (event.ctrlKey || event.metaKey) {
-      option.selected = !option.selected;
-    } else {
-      if (option.selected) {
-        option.selected = false;
-      } else {
-        for (let i = 0; i < selectElement.options.length; i++) {
-          const optionToUpdate = selectElement.options[i];
-          if (optionToUpdate) {
-            optionToUpdate.selected = i === index;
-          }
-        }
-      }
-    }
-
-    const selectedOptions = Array.from(selectElement.selectedOptions);
-    const selectedIndexes = selectedOptions.map(opt => parseInt(opt.value));
+  const handleSelectionChange = (selectedIndexes: number[]) => {
     setSelectedDateOptionIndexes(selectedIndexes);
   };
 
@@ -105,57 +64,18 @@ export default function Create() {
       ...prev,
       dateOptions: prev.dateOptions.filter((_, i) => i !== index)
     }));
-    setSelectedDateOptionIndexes(prev => 
-      prev
-        .filter(i => i !== index)
-        .map(i => i > index ? i - 1 : i)
-    );
   };
 
   const handleRemoveSelectedOptions = () => {
-    if (selectedDateOptionIndexes.length === 0) return;
-    
-    const sortedIndexes = [...selectedDateOptionIndexes].sort((a, b) => b - a);
-    const newDateOptions = [...eventData.dateOptions];
-    
-    sortedIndexes.forEach(index => {
-      newDateOptions.splice(index, 1);
-    });
-    
-    setEventData(prev => ({
-      ...prev,
-      dateOptions: newDateOptions
-    }));
-    
-    setSelectedDateOptionIndexes([]);
+    dateOptionsListRef.current?.removeSelectedOptions();
   };
 
   const handleSelectAll = () => {
-    const selectElement = selectRef.current;
-    if (!selectElement || !selectElement.options) return;
-
-    for (let i = 0; i < selectElement.options.length; i++) {
-      const option = selectElement.options[i];
-      if (option) {
-        option.selected = true;
-      }
-    }
-
-    setSelectedDateOptionIndexes(Array.from({ length: eventData.dateOptions.length }, (_, i) => i));
+    dateOptionsListRef.current?.selectAll();
   };
 
   const handleDeselectAll = () => {
-    const selectElement = selectRef.current;
-    if (!selectElement || !selectElement.options) return;
-
-    for (let i = 0; i < selectElement.options.length; i++) {
-      const option = selectElement.options[i];
-      if (option) {
-        option.selected = false;
-      }
-    }
-
-    setSelectedDateOptionIndexes([]);
+    dateOptionsListRef.current?.deselectAll();
   };
 
 
@@ -287,14 +207,12 @@ export default function Create() {
               </div>
               
               <DateOptionsList
+                ref={dateOptionsListRef}
                 dateOptions={eventData.dateOptions}
-                selectedDateOptionIndexes={selectedDateOptionIndexes}
-                onDateOptionClick={handleDateOptionClick}
                 onRemoveDateOption={handleRemoveDateOption}
                 onTimeChange={(index, time) => handleDateOptionChange(index, "time", time)}
                 onDateChange={(index, date) => handleDateOptionChange(index, "date", date)}
-                selectRef={selectRef}
-                onSelectChange={handleSelectChange}
+                onSelectionChange={handleSelectionChange}
               />
               
               {eventData.dateOptions.length === 0 && (
