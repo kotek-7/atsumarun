@@ -17,7 +17,6 @@ export default function Create() {
     hostName: "",
     hostEmail: "",
     dateOptions: [],
-    duration: "",
   });
 
   const handleAddDateOption = () => {
@@ -158,6 +157,7 @@ export default function Create() {
 
     setSelectedDateOptionIndexes([]);
   };
+
 
   const handleEventSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -304,24 +304,6 @@ export default function Create() {
               )}
             </div>
 
-            <div>
-              <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-2">
-                所要時間
-              </label>
-              <select
-                id="duration"
-                value={eventData.duration}
-                onChange={(e) => setEventData(prev => ({ ...prev, duration: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">選択してください</option>
-                <option value="30分">30分</option>
-                <option value="1時間">1時間</option>
-                <option value="1時間30分">1時間30分</option>
-                <option value="2時間">2時間</option>
-                <option value="その他">その他</option>
-              </select>
-            </div>
 
                   <button
                     type="submit"

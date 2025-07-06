@@ -11,7 +11,6 @@ export interface EventData {
   hostName: string;
   hostEmail: string;
   dateOptions: DateOption[];
-  duration: string;
 }
 
 export interface ParticipantData {

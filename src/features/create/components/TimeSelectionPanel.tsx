@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface TimeSelectionPanelProps {
   selectedDateIndexes: number[];
@@ -11,11 +11,32 @@ export const TimeSelectionPanel = ({ selectedDateIndexes, onTimeChange }: TimeSe
   const [customTimes, setCustomTimes] = useState<string[]>([]);
   const [newTime, setNewTime] = useState("");
 
+  // Load custom times from localStorage on component mount
+  useEffect(() => {
+    const savedTimes = localStorage.getItem('atsumarun-custom-times');
+    if (savedTimes) {
+      try {
+        const parsedTimes = JSON.parse(savedTimes);
+        if (Array.isArray(parsedTimes)) {
+          setCustomTimes(parsedTimes);
+        }
+      } catch (error) {
+        console.error('Failed to parse saved custom times:', error);
+      }
+    }
+  }, []);
+
+  // Save custom times to localStorage whenever customTimes changes
+  useEffect(() => {
+    localStorage.setItem('atsumarun-custom-times', JSON.stringify(customTimes));
+  }, [customTimes]);
+
   const allTimes = customTimes.sort();
 
   const addCustomTime = () => {
-    if (newTime.trim() && !allTimes.includes(newTime.trim())) {
-      setCustomTimes(prev => [...prev, newTime.trim()]);
+    const trimmedTime = newTime.trim();
+    if (trimmedTime && !allTimes.includes(trimmedTime)) {
+      setCustomTimes(prev => [...prev, trimmedTime]);
       setNewTime("");
     }
   };

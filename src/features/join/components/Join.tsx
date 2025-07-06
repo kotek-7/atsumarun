@@ -23,7 +23,6 @@ export default function Join() {
       { date: "2024-01-17", time: "09:00" },
       { date: "2024-01-18", time: "15:30" },
     ],
-    duration: "1時間",
   };
 
   const formatDate = (dateString: string) => {
@@ -73,13 +72,8 @@ export default function Join() {
               主催者: {mockEventData.hostName}
             </p>
             {mockEventData.description && (
-              <p className="text-blue-700 text-sm mb-2">
-                {mockEventData.description}
-              </p>
-            )}
-            {mockEventData.duration && (
               <p className="text-blue-700 text-sm">
-                所要時間: {mockEventData.duration}
+                {mockEventData.description}
               </p>
             )}
           </div>
