@@ -8,18 +8,10 @@ import { SimpleDateOptionsList } from "@/features/create/components/SimpleDateOp
 import { EventData, DateOption } from "@/features/shared/types";
 import { DateOptionWithUI } from "@/features/create/types";
 
-// モックデータ（仮設計用）
-const mockDateOptions: DateOptionWithUI[] = [
-  { date: "2025-01-15", time: "10:00", selected: false },
-  { date: "2025-01-16", time: "14:00", selected: false },
-  { date: "2025-01-17", time: "09:30", selected: false },
-  { date: "2025-01-18", time: "16:00", selected: false },
-  { date: "2025-01-19", time: "11:30", selected: false },
-];
 
 export default function Create() {
   const router = useRouter();
-  const [mockOptions, setMockOptions] = useState<DateOptionWithUI[]>(mockDateOptions);
+  const [dateOptions, setDateOptions] = useState<DateOptionWithUI[]>([]);
   const [eventData, setEventData] = useState<EventData>({
     title: "",
     description: "",
@@ -29,47 +21,47 @@ export default function Create() {
   });
 
   const handleAddDateOption = () => {
-    setMockOptions((prev) => [...prev, { date: "", time: "", selected: false }]);
+    setDateOptions((prev) => [...prev, { date: "", time: "", selected: false }]);
   };
 
   const handleCalendarDateSelect = (dateString: string) => {
-    const selectedIndexes = mockOptions
+    const selectedIndexes = dateOptions
       .map((option, index) => (option.selected ? index : -1))
       .filter((index) => index !== -1);
 
     if (selectedIndexes.length > 0) {
-      const newOptions = mockOptions.map((option, index) => 
+      const newOptions = dateOptions.map((option, index) => 
         selectedIndexes.includes(index) ? { ...option, date: dateString } : option
       );
-      setMockOptions(newOptions);
+      setDateOptions(newOptions);
     } else {
-      setMockOptions((prev) => [...prev, { date: dateString, time: "", selected: false }]);
+      setDateOptions((prev) => [...prev, { date: dateString, time: "", selected: false }]);
     }
   };
 
   const handleTimeSelectionChange = (time: string) => {
-    const selectedIndexes = mockOptions
+    const selectedIndexes = dateOptions
       .map((option, index) => (option.selected ? index : -1))
       .filter((index) => index !== -1);
 
     console.log("Time selection changed:", time, "for indexes:", selectedIndexes);
     
-    const newOptions = mockOptions.map((option, index) => 
+    const newOptions = dateOptions.map((option, index) => 
       selectedIndexes.includes(index) ? { ...option, time } : option
     );
-    setMockOptions(newOptions);
+    setDateOptions(newOptions);
   };
 
   const handleRemoveSelectedOptions = () => {
-    setMockOptions((prev) => prev.filter((option) => !option.selected));
+    setDateOptions((prev) => prev.filter((option) => !option.selected));
   };
 
   const handleSelectAll = () => {
-    setMockOptions((prev) => prev.map((option) => ({ ...option, selected: true })));
+    setDateOptions((prev) => prev.map((option) => ({ ...option, selected: true })));
   };
 
   const handleDeselectAll = () => {
-    setMockOptions((prev) => prev.map((option) => ({ ...option, selected: false })));
+    setDateOptions((prev) => prev.map((option) => ({ ...option, selected: false })));
   };
 
   const handleEventSubmit = (e: React.FormEvent) => {
@@ -161,7 +153,7 @@ export default function Create() {
                         <button
                           type="button"
                           onClick={handleRemoveSelectedOptions}
-                          disabled={!mockOptions.some((option) => option.selected)}
+                          disabled={!dateOptions.some((option) => option.selected)}
                           className="text-red-600 px-2 py-1 rounded hover:text-red-800 hover:bg-red-50 text-sm font-medium disabled:text-gray-400 disabled:hover:text-gray-400 disabled:hover:bg-transparent transition-colors duration-200"
                         >
                           選択した候補を削除
@@ -169,7 +161,7 @@ export default function Create() {
                         <button
                           type="button"
                           onClick={handleSelectAll}
-                          disabled={mockOptions.length === 0}
+                          disabled={dateOptions.length === 0}
                           className="text-gray-600 px-2 py-1 rounded hover:text-gray-800 hover:bg-gray-100 text-sm font-medium disabled:text-gray-400 disabled:hover:text-gray-400 disabled:hover:bg-transparent transition-colors duration-200"
                         >
                           全選択
@@ -177,7 +169,7 @@ export default function Create() {
                         <button
                           type="button"
                           onClick={handleDeselectAll}
-                          disabled={!mockOptions.some((option) => option.selected)}
+                          disabled={!dateOptions.some((option) => option.selected)}
                           className="text-gray-600 px-2 py-1 rounded hover:text-gray-800 hover:bg-gray-100 text-sm font-medium disabled:text-gray-400 disabled:hover:text-gray-400 disabled:hover:bg-transparent transition-colors duration-200"
                         >
                           選択解除
@@ -193,11 +185,11 @@ export default function Create() {
                     </div>
 
                     <SimpleDateOptionsList
-                      dateOptions={mockOptions}
-                      setDateOptions={setMockOptions}
+                      dateOptions={dateOptions}
+                      setDateOptions={setDateOptions}
                     />
 
-                    {mockOptions.length === 0 && (
+                    {dateOptions.length === 0 && (
                       <div className="text-gray-500 text-sm py-4 text-center border-2 border-dashed border-gray-300 rounded-md">
                         「日時を追加」をクリックするか、右のカレンダーから日付を選択してください
                       </div>
@@ -221,12 +213,12 @@ export default function Create() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">カレンダーから日付を選択</h3>
                 <Calendar
                   onDateSelect={handleCalendarDateSelect}
-                  selectedDates={mockOptions.map((option) => option.date).filter((date) => date !== "")}
+                  selectedDates={dateOptions.map((option) => option.date).filter((date) => date !== "")}
                 />
               </div>
 
               <TimeSelectionPanel
-                selectedDateIndexes={mockOptions
+                selectedDateIndexes={dateOptions
                   .map((option, index) => (option.selected ? index : -1))
                   .filter((index) => index !== -1)}
                 onTimeChange={handleTimeSelectionChange}
