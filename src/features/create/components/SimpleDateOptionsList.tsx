@@ -8,16 +8,13 @@ interface SimpleDateOptionsListProps {
   setDateOptions: (dateOptions: DateOptionWithUI[]) => void;
 }
 
-export const SimpleDateOptionsList = ({
-  dateOptions,
-  setDateOptions,
-}: SimpleDateOptionsListProps) => {
+export const SimpleDateOptionsList = ({ dateOptions, setDateOptions }: SimpleDateOptionsListProps) => {
   const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(null);
-  
+
   // selectedIndexesを内部で計算
   const selectedIndexes = dateOptions
-    .map((option, index) => option.selected ? index : -1)
-    .filter(index => index !== -1);
+    .map((option, index) => (option.selected ? index : -1))
+    .filter((index) => index !== -1);
 
   const handleItemClick = (index: number, event: React.MouseEvent) => {
     let newSelectedIndexes: number[];
@@ -55,7 +52,22 @@ export const SimpleDateOptionsList = ({
     // dateOptionsを直接更新
     const newDateOptions = dateOptions.map((option, i) => ({
       ...option,
-      selected: newSelectedIndexes.includes(i)
+      selected: newSelectedIndexes.includes(i),
+    }));
+    setDateOptions(newDateOptions);
+  };
+
+  const handleCheckboxClick = (index: number, event: React.MouseEvent) => {
+    event.stopPropagation(); // クリックイベントの伝播を防ぐ
+    const newSelectedIndexes = selectedIndexes.includes(index)
+      ? selectedIndexes.filter((i) => i !== index) // 選択解除
+      : [...selectedIndexes, index]; // 選択追加
+    setLastSelectedIndex(index);
+
+    // dateOptionsを直接更新
+    const newDateOptions = dateOptions.map((option, i) => ({
+      ...option,
+      selected: newSelectedIndexes.includes(i),
     }));
     setDateOptions(newDateOptions);
   };
@@ -75,7 +87,10 @@ export const SimpleDateOptionsList = ({
         >
           {/* 選択インジケーター */}
           <div
-            className={`w-4 h-4 rounded border-2 flex items-center justify-center ${
+            onClick={(e) => {
+              handleCheckboxClick(index, e);
+            }}
+            className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
               selectedIndexes.includes(index) ? "bg-blue-600 border-blue-600" : "border-gray-300"
             }`}
           >
@@ -97,7 +112,7 @@ export const SimpleDateOptionsList = ({
               value={option.date}
               onChange={(e) => {
                 e.stopPropagation();
-                const newDateOptions = dateOptions.map((opt, i) => 
+                const newDateOptions = dateOptions.map((opt, i) =>
                   i === index ? { ...opt, date: e.target.value } : opt
                 );
                 setDateOptions(newDateOptions);
@@ -110,7 +125,7 @@ export const SimpleDateOptionsList = ({
               value={option.time || ""}
               onChange={(e) => {
                 e.stopPropagation();
-                const newDateOptions = dateOptions.map((opt, i) => 
+                const newDateOptions = dateOptions.map((opt, i) =>
                   i === index ? { ...opt, time: e.target.value } : opt
                 );
                 setDateOptions(newDateOptions);
