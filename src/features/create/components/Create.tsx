@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar } from "@/features/shared/components/Calendar";
 import { TimeSelectionPanel } from "@/features/create/components/TimeSelectionPanel";
-import { SimpleDateOptionsList } from "@/features/create/components/SimpleDateOptionsList";
+import { DateOptionsList } from "@/features/create/components/DateOptionsList";
 import { EventData } from "@/features/shared/types";
 import { DateOptionWithUI } from "@/features/create/types";
 
@@ -22,7 +22,12 @@ export default function Create() {
   const handleAddDateOption = () => {
     setDateOptions((prev) => [
       ...prev,
-      { date: "", time: "", selected: false },
+      {
+        id: `option-${Date.now()}-${Math.random()}`,
+        date: "",
+        time: "",
+        selected: false,
+      },
     ]);
   };
 
@@ -41,7 +46,12 @@ export default function Create() {
     } else {
       setDateOptions((prev) => [
         ...prev,
-        { date: dateString, time: "", selected: false },
+        {
+          id: `option-${Date.now()}-${Math.random()}`,
+          date: dateString,
+          time: "",
+          selected: false,
+        },
       ]);
     }
   };
@@ -243,7 +253,7 @@ export default function Create() {
                       </div>
                     </div>
 
-                    <SimpleDateOptionsList
+                    <DateOptionsList
                       dateOptions={dateOptions}
                       setDateOptions={setDateOptions}
                     />
