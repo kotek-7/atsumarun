@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar } from "@/features/shared/components/Calendar";
 import { TimeSelectionPanel } from "@/features/create/components/TimeSelectionPanel";
 import { SimpleDateOptionsList } from "@/features/create/components/SimpleDateOptionsList";
-import { EventData, DateOption } from "@/features/shared/types";
+import { EventData } from "@/features/shared/types";
 import { DateOptionWithUI } from "@/features/create/types";
 
 export default function Create() {
