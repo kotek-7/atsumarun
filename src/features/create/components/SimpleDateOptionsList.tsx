@@ -8,8 +8,13 @@ interface SimpleDateOptionsListProps {
   setDateOptions: (dateOptions: DateOptionWithUI[]) => void;
 }
 
-export const SimpleDateOptionsList = ({ dateOptions, setDateOptions }: SimpleDateOptionsListProps) => {
-  const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(null);
+export const SimpleDateOptionsList = ({
+  dateOptions,
+  setDateOptions,
+}: SimpleDateOptionsListProps) => {
+  const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(
+    null
+  );
 
   // selectedIndexesを内部で計算
   const selectedIndexes = dateOptions
@@ -23,7 +28,10 @@ export const SimpleDateOptionsList = ({ dateOptions, setDateOptions }: SimpleDat
       // Shift+Click: 範囲選択
       const start = Math.min(lastSelectedIndex, index);
       const end = Math.max(lastSelectedIndex, index);
-      const rangeIndexes = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+      const rangeIndexes = Array.from(
+        { length: end - start + 1 },
+        (_, i) => start + i
+      );
 
       // 既存の選択に範囲を追加
       newSelectedIndexes = [...new Set([...selectedIndexes, ...rangeIndexes])];
@@ -78,10 +86,10 @@ export const SimpleDateOptionsList = ({ dateOptions, setDateOptions }: SimpleDat
         <div
           key={index}
           onClick={(e) => handleItemClick(index, e)}
-          className={`flex items-center gap-2 mb-3 p-2 rounded cursor-pointer transition-colors ${
+          className={`mb-3 flex cursor-pointer items-center gap-2 rounded p-2 transition-colors ${
             selectedIndexes.includes(index)
-              ? "bg-blue-50 border-blue-200 border"
-              : "hover:bg-gray-50 border border-transparent"
+              ? "border border-blue-200 bg-blue-50"
+              : "border border-transparent hover:bg-gray-50"
           }`}
           style={{ userSelect: "none" }}
         >
@@ -90,12 +98,18 @@ export const SimpleDateOptionsList = ({ dateOptions, setDateOptions }: SimpleDat
             onClick={(e) => {
               handleCheckboxClick(index, e);
             }}
-            className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
-              selectedIndexes.includes(index) ? "bg-blue-600 border-blue-600" : "border-gray-300"
+            className={`flex h-5 w-5 items-center justify-center rounded border-2 ${
+              selectedIndexes.includes(index)
+                ? "border-blue-600 bg-blue-600"
+                : "border-gray-300"
             }`}
           >
             {selectedIndexes.includes(index) && (
-              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <svg
+                className="h-3 w-3 text-white"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path
                   fillRule="evenodd"
                   d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -106,7 +120,7 @@ export const SimpleDateOptionsList = ({ dateOptions, setDateOptions }: SimpleDat
           </div>
 
           {/* 日付と時間の編集 */}
-          <div className="flex-1 flex items-center gap-3">
+          <div className="flex flex-1 items-center gap-3">
             <input
               type="date"
               value={option.date}
@@ -117,7 +131,7 @@ export const SimpleDateOptionsList = ({ dateOptions, setDateOptions }: SimpleDat
                 );
                 setDateOptions(newDateOptions);
               }}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             />
             <input
@@ -130,17 +144,19 @@ export const SimpleDateOptionsList = ({ dateOptions, setDateOptions }: SimpleDat
                 );
                 setDateOptions(newDateOptions);
               }}
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="時間（オプション）"
             />
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
-                const newDateOptions = dateOptions.filter((_, i) => i !== index);
+                const newDateOptions = dateOptions.filter(
+                  (_, i) => i !== index
+                );
                 setDateOptions(newDateOptions);
               }}
-              className="text-red-600 hover:text-red-800 px-2 py-1"
+              className="px-2 py-1 text-red-600 hover:text-red-800"
             >
               削除
             </button>

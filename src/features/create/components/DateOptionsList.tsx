@@ -1,7 +1,12 @@
 "use client";
 
 import { DateOption } from "@/features/shared/types";
-import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "@hello-pangea/dnd";
 
 interface DateOptionsListProps {
   dateOptions: DateOption[];
@@ -24,14 +29,14 @@ export const DateOptionsList = ({
   onDateChange,
   selectRef,
   onSelectChange,
-  onReorderDateOptions
+  onReorderDateOptions,
 }: DateOptionsListProps) => {
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
-    
+
     const startIndex = result.source.index;
     const endIndex = result.destination.index;
-    
+
     if (startIndex !== endIndex) {
       onReorderDateOptions(startIndex, endIndex);
     }
@@ -57,45 +62,49 @@ export const DateOptionsList = ({
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="date-options">
           {(provided) => (
-            <div 
+            <div
               className="space-y-2"
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
               {dateOptions.map((option, index) => (
-                <Draggable 
-                  key={`option-${index}`} 
-                  draggableId={`option-${index}`} 
+                <Draggable
+                  key={`option-${index}`}
+                  draggableId={`option-${index}`}
                   index={index}
                 >
                   {(provided, snapshot) => (
-                    <div 
+                    <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      className={`flex items-center gap-2 mb-3 p-2 rounded transition-colors ${
+                      className={`mb-3 flex items-center gap-2 rounded p-2 transition-colors ${
                         snapshot.isDragging
-                          ? 'bg-blue-100 border-blue-300 border shadow-lg'
-                          : selectedDateOptionIndexes.includes(index) 
-                          ? 'bg-blue-50 border-blue-200 border' 
-                          : 'hover:bg-gray-50 border border-transparent'
+                          ? "border border-blue-300 bg-blue-100 shadow-lg"
+                          : selectedDateOptionIndexes.includes(index)
+                            ? "border border-blue-200 bg-blue-50"
+                            : "border border-transparent hover:bg-gray-50"
                       }`}
                     >
                       {/* ドラッグハンドル */}
-                      <div 
+                      <div
                         {...provided.dragHandleProps}
-                        className="flex items-center justify-center w-6 h-6 text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing"
+                        className="flex h-6 w-6 cursor-grab items-center justify-center text-gray-400 hover:text-gray-600 active:cursor-grabbing"
                       >
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <svg
+                          className="h-4 w-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
                           <path d="M7 2a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM7 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM7 14a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM17 2a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM17 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM17 14a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
                         </svg>
                       </div>
 
                       {/* 選択インジケーター */}
-                      <div 
-                        className={`w-4 h-4 rounded border-2 flex items-center justify-center cursor-pointer ${
-                          selectedDateOptionIndexes.includes(index) 
-                            ? 'bg-blue-600 border-blue-600' 
-                            : 'border-gray-300'
+                      <div
+                        className={`flex h-4 w-4 cursor-pointer items-center justify-center rounded border-2 ${
+                          selectedDateOptionIndexes.includes(index)
+                            ? "border-blue-600 bg-blue-600"
+                            : "border-gray-300"
                         }`}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -103,14 +112,22 @@ export const DateOptionsList = ({
                         }}
                       >
                         {selectedDateOptionIndexes.includes(index) && (
-                          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          <svg
+                            className="h-3 w-3 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
                           </svg>
                         )}
                       </div>
 
                       {/* 入力フィールド */}
-                      <div className="flex-1 flex items-center gap-3">
+                      <div className="flex flex-1 items-center gap-3">
                         <input
                           type="date"
                           value={option.date}
@@ -118,7 +135,7 @@ export const DateOptionsList = ({
                             e.stopPropagation();
                             onDateChange?.(index, e.target.value);
                           }}
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
                           required
                         />
                         <input
@@ -128,7 +145,7 @@ export const DateOptionsList = ({
                             e.stopPropagation();
                             onTimeChange(index, e.target.value);
                           }}
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
                           placeholder="時間（オプション）"
                         />
                         <button
@@ -137,7 +154,7 @@ export const DateOptionsList = ({
                             e.stopPropagation();
                             onRemoveDateOption(index);
                           }}
-                          className="text-red-600 hover:text-red-800 px-2 py-1"
+                          className="px-2 py-1 text-red-600 hover:text-red-800"
                         >
                           削除
                         </button>
