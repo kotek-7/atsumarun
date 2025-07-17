@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar } from "@/features/shared/components/Calendar";
-import { TimeSelectionPanel } from "@/features/create/components/TimeSelectionPanel";
+import { TimeTemplateSelector } from "@/features/create/components/TimeTemplateSelector";
 import { DateOptionsList } from "@/features/create/components/DateOptionsList";
 import { EventData } from "@/features/shared/types";
 import { DateOptionWithUI } from "@/features/create/types";
@@ -290,7 +290,7 @@ export default function Create() {
                 />
               </div>
 
-              <TimeSelectionPanel
+              <TimeTemplateSelector
                 selectedDateIndexes={dateOptions
                   .map((option, index) => (option.selected ? index : -1))
                   .filter((index) => index !== -1)}
