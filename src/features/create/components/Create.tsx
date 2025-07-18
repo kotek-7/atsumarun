@@ -14,8 +14,6 @@ export default function Create() {
   const [eventData, setEventData] = useState<EventData>({
     title: "",
     description: "",
-    hostName: "",
-    hostEmail: "",
     dateOptions: [],
   });
 
@@ -161,53 +159,6 @@ export default function Create() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div>
-                      <label
-                        htmlFor="hostName"
-                        className="mb-2 block text-sm font-medium text-gray-700"
-                      >
-                        主催者名 *
-                      </label>
-                      <input
-                        type="text"
-                        id="hostName"
-                        required
-                        value={eventData.hostName}
-                        onChange={(e) =>
-                          setEventData((prev) => ({
-                            ...prev,
-                            hostName: e.target.value,
-                          }))
-                        }
-                        className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        placeholder="山田太郎"
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="hostEmail"
-                        className="mb-2 block text-sm font-medium text-gray-700"
-                      >
-                        メールアドレス *
-                      </label>
-                      <input
-                        type="email"
-                        id="hostEmail"
-                        required
-                        value={eventData.hostEmail}
-                        onChange={(e) =>
-                          setEventData((prev) => ({
-                            ...prev,
-                            hostEmail: e.target.value,
-                          }))
-                        }
-                        className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        placeholder="example@email.com"
-                      />
-                    </div>
-                  </div>
 
                   <div>
                     <div className="mb-4 flex items-center justify-between">

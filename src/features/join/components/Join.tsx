@@ -8,7 +8,6 @@ export default function Join() {
   const router = useRouter();
   const [participantData, setParticipantData] = useState<ParticipantData>({
     name: "",
-    email: "",
     availableOptions: [],
     message: "",
   });
@@ -77,52 +76,27 @@ export default function Join() {
           </div>
 
           <form onSubmit={handleParticipantSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="participantName"
-                  className="mb-2 block text-sm font-medium text-gray-700"
-                >
-                  お名前 *
-                </label>
-                <input
-                  type="text"
-                  id="participantName"
-                  required
-                  value={participantData.name}
-                  onChange={(e) =>
-                    setParticipantData((prev) => ({
-                      ...prev,
-                      name: e.target.value,
-                    }))
-                  }
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  placeholder="山田花子"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="participantEmail"
-                  className="mb-2 block text-sm font-medium text-gray-700"
-                >
-                  メールアドレス *
-                </label>
-                <input
-                  type="email"
-                  id="participantEmail"
-                  required
-                  value={participantData.email}
-                  onChange={(e) =>
-                    setParticipantData((prev) => ({
-                      ...prev,
-                      email: e.target.value,
-                    }))
-                  }
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                  placeholder="example@email.com"
-                />
-              </div>
+            <div>
+              <label
+                htmlFor="participantName"
+                className="mb-2 block text-sm font-medium text-gray-700"
+              >
+                お名前 *
+              </label>
+              <input
+                type="text"
+                id="participantName"
+                required
+                value={participantData.name}
+                onChange={(e) =>
+                  setParticipantData((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }))
+                }
+                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="山田花子"
+              />
             </div>
 
             <div>
