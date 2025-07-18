@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 
 interface TimeTemplatePanelProps {
   selectedDateIndexes: number[];
-  onTimeChange: (time: string) => void;
+  updateSelectedTime: (time: string) => void;
 }
 
 export const TimeTemplateSelector = ({
   selectedDateIndexes,
-  onTimeChange,
+  updateSelectedTime: onTimeChange,
 }: TimeTemplatePanelProps) => {
-  const [customTemplates, setCustomTemplates] = useState<string[]>([]);
+  const [customTemplates, setCustomTemplates] = useState<string[]>(["9:00", "12:00", "15:00"]);
   const [newTemplate, setNewTemplate] = useState("");
 
   // Load custom templates from localStorage on component mount
@@ -31,7 +31,10 @@ export const TimeTemplateSelector = ({
 
   // Save custom templates to localStorage whenever customTemplates changes
   useEffect(() => {
-    localStorage.setItem("atsumarun-custom-templates", JSON.stringify(customTemplates));
+    localStorage.setItem(
+      "atsumarun-custom-templates",
+      JSON.stringify(customTemplates)
+    );
   }, [customTemplates]);
 
   const allTemplates = customTemplates.sort();
@@ -45,9 +48,10 @@ export const TimeTemplateSelector = ({
   };
 
   const removeCustomTemplate = (templateToRemove: string) => {
-    setCustomTemplates((prev) => prev.filter((template) => template !== templateToRemove));
+    setCustomTemplates((prev) =>
+      prev.filter((template) => template !== templateToRemove)
+    );
   };
-
 
   return (
     <div className="time-template-panel rounded-lg border border-gray-300 bg-white p-4 shadow-sm">
@@ -60,10 +64,15 @@ export const TimeTemplateSelector = ({
         )}
       </h3>
 
+      {allTemplates.length === 0 && (
+        <p className="text-sm text-gray-500">
+          まだ時刻テンプレートはありません。
+        </p>
+      )}
       {allTemplates.length > 0 && (
         <div className="mb-4">
           <label className="mb-2 block text-sm font-medium text-gray-700">
-            クリックして時刻を選択
+            選択中の候補日時に一括で時刻を適用します。
           </label>
           <div className="max-h-48 space-y-1 overflow-y-auto">
             {allTemplates.map((template) => (
@@ -72,7 +81,7 @@ export const TimeTemplateSelector = ({
                   type="button"
                   onMouseDown={(e) => e.preventDefault()} // Prevent focus loss
                   onClick={() => onTimeChange(template)}
-                  className="flex-1 rounded border border-gray-300 bg-white px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50"
+                  className="flex-1 rounded border border-gray-300 bg-white px-3 py-2 text-left text-sm text-gray-700 shadow hover:bg-gray-50"
                 >
                   {template}
                 </button>

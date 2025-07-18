@@ -56,7 +56,7 @@ export default function Create() {
     }
   };
 
-  const handleTimeSelectionChange = (time: string) => {
+  const updateSelectedTime = (time: string) => {
     const selectedIndexes = dateOptions
       .map((option, index) => (option.selected ? index : -1))
       .filter((index) => index !== -1);
@@ -294,7 +294,7 @@ export default function Create() {
                 selectedDateIndexes={dateOptions
                   .map((option, index) => (option.selected ? index : -1))
                   .filter((index) => index !== -1)}
-                onTimeChange={handleTimeSelectionChange}
+                updateSelectedTime={updateSelectedTime}
               />
             </div>
           </div>
