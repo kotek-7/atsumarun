@@ -3,6 +3,8 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { DateOptionWithUI } from "@/features/create/types";
 
 interface DateOptionItemProps {
@@ -47,9 +49,9 @@ export function DateOptionItem({
       {...attributes}
       className={`mb-3 flex items-center gap-2 rounded p-2 transition-colors ${
         isDragging
-          ? "border border-primary-300 bg-primary-100 shadow-lg"
+          ? "border-primary-300 bg-primary-100 border shadow-lg"
           : isSelected
-            ? "border border-primary-200 bg-primary-50"
+            ? "border-primary-200 bg-primary-50 border"
             : "border border-transparent hover:bg-gray-50"
       }`}
     >
@@ -96,16 +98,23 @@ export function DateOptionItem({
 
         {/* 日付と時間の編集 */}
         <div className="flex flex-1 items-center gap-3">
-          <input
-            type="date"
-            value={option.date}
-            onChange={(e) => {
-              e.stopPropagation();
-              onDateChange(index, e.target.value);
-            }}
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-primary-500 focus:outline-none"
-            required
-          />
+          <div className="flex-1">
+            <DatePicker
+              selected={option.date ? new Date(option.date) : null}
+              onChange={(date: Date | null) => {
+                if (date) {
+                  const dateString = date.toISOString().split("T")[0];
+                  onDateChange(index, dateString);
+                }
+              }}
+              onClickOutside={(e) => e.stopPropagation()}
+              onSelect={(e) => e.stopPropagation()}
+              className="focus:ring-primary-500 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
+              placeholderText="日付を選択"
+              dateFormat="yyyy/MM/dd"
+              required
+            />
+          </div>
           <input
             type="text"
             value={option.time || ""}
@@ -113,7 +122,7 @@ export function DateOptionItem({
               e.stopPropagation();
               onTimeChange(index, e.target.value);
             }}
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-primary-500 focus:outline-none"
+            className="focus:ring-primary-500 flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
             placeholder="時間（オプション）"
           />
           <button
@@ -122,7 +131,7 @@ export function DateOptionItem({
               e.stopPropagation();
               onDelete(index);
             }}
-            className="px-2 py-1 text-danger-600 hover:text-danger-800"
+            className="text-danger-600 hover:text-danger-800 px-2 py-1"
           >
             削除
           </button>

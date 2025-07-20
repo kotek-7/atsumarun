@@ -11,7 +11,11 @@ export const TimeTemplateSelector = ({
   selectedDateIndexes,
   updateSelectedTime: onTimeChange,
 }: TimeTemplatePanelProps) => {
-  const [customTemplates, setCustomTemplates] = useState<string[]>(["9:00", "12:00", "15:00"]);
+  const [customTemplates, setCustomTemplates] = useState<string[]>([
+    "9:00",
+    "12:00",
+    "15:00",
+  ]);
   const [newTemplate, setNewTemplate] = useState("");
 
   // Load custom templates from localStorage on component mount
@@ -89,7 +93,7 @@ export const TimeTemplateSelector = ({
                   type="button"
                   onMouseDown={(e) => e.preventDefault()} // Prevent focus loss
                   onClick={() => removeCustomTemplate(template)}
-                  className="rounded p-2 text-danger-600 hover:bg-danger-50 hover:text-danger-800"
+                  className="text-danger-600 hover:bg-danger-50 hover:text-danger-800 rounded p-2"
                   title="削除"
                 >
                   🗑️
@@ -119,13 +123,13 @@ export const TimeTemplateSelector = ({
             type="text"
             value={newTemplate}
             onChange={(e) => setNewTemplate(e.target.value)}
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-primary-500 focus:outline-none"
+            className="focus:ring-primary-500 flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
             placeholder="例: 9:00, 午前中, ランチタイム"
           />
           <button
             type="submit"
             onMouseDown={(e) => e.preventDefault()} // Prevent focus loss
-            className="rounded-md bg-secondary-600 px-3 py-2 text-sm text-white hover:bg-secondary-700"
+            className="bg-secondary-600 hover:bg-secondary-700 rounded-md px-3 py-2 text-sm text-white"
           >
             追加
           </button>

@@ -19,14 +19,14 @@ export default function Home() {
           <div className="space-y-4">
             <button
               onClick={() => router.push("/create")}
-              className="w-full rounded-md bg-primary-600 px-4 py-3 font-medium text-white transition-colors duration-200 hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:outline-none"
+              className="bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 w-full rounded-md px-4 py-3 font-medium text-white transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none"
             >
               イベントを作成する
             </button>
 
             <button
               onClick={() => router.push("/join")}
-              className="w-full rounded-md bg-secondary-600 px-4 py-3 font-medium text-white transition-colors duration-200 hover:bg-secondary-700 focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 focus:outline-none"
+              className="bg-secondary-600 hover:bg-secondary-700 focus:ring-secondary-500 w-full rounded-md px-4 py-3 font-medium text-white transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none"
             >
               イベントに参加する
             </button>
