@@ -78,6 +78,12 @@ export const Calendar = ({ onDateSelect, selectedDates }: CalendarProps) => {
 
   return (
     <div className="rounded-lg border border-gray-300 bg-white p-4 shadow-sm">
+      <h3 className="mb-4 text-lg font-semibold text-gray-900">
+        カレンダーから日付を選択
+      </h3>
+      <p className="mb-4 block text-sm font-medium text-gray-700">
+        選択中の候補日時に一括で日付を適用します。
+      </p>
       <div className="mb-4 flex items-center justify-between">
         <button
           type="button"

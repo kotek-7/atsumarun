@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Calendar } from "@/features/shared/components/Calendar";
+import { Calendar } from "@/features/create/components/Calendar";
 import { TimeTemplateSelector } from "@/features/create/components/TimeTemplateSelector";
 import { DateOptionsList } from "@/features/create/components/DateOptionsList";
 import { EventData } from "@/features/shared/types";
@@ -228,17 +228,12 @@ export default function Create() {
 
           <div className="lg:col-span-1">
             <div className="sticky top-6 space-y-6">
-              <div>
-                <h3 className="mb-4 text-lg font-semibold text-gray-900">
-                  カレンダーから日付を選択
-                </h3>
-                <Calendar
-                  onDateSelect={handleCalendarDateSelect}
-                  selectedDates={dateOptions
-                    .map((option) => option.date)
-                    .filter((date) => date !== "")}
-                />
-              </div>
+              <Calendar
+                onDateSelect={handleCalendarDateSelect}
+                selectedDates={dateOptions
+                  .map((option) => option.date)
+                  .filter((date) => date !== "")}
+              />
 
               <TimeTemplateSelector
                 selectedDateIndexes={dateOptions

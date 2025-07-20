@@ -73,9 +73,9 @@ export const TimeTemplateSelector = ({
       )}
       {customTemplates.length > 0 && (
         <div className="mb-4">
-          <label className="mb-2 block text-sm font-medium text-gray-700">
+          <p className="mb-2 block text-sm font-medium text-gray-700">
             選択中の候補日時に一括で時刻を適用します。
-          </label>
+          </p>
           <div className="max-h-48 space-y-1 overflow-y-auto">
             {customTemplates.map((template) => (
               <div key={template} className="flex items-center gap-2">
