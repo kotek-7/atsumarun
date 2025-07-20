@@ -41,11 +41,9 @@ export const TimeTemplateSelector = ({
     );
   }, [customTemplates]);
 
-  const allTemplates = customTemplates.sort();
-
   const addCustomTemplate = () => {
     const trimmedTemplate = newTemplate.trim();
-    if (trimmedTemplate && !allTemplates.includes(trimmedTemplate)) {
+    if (trimmedTemplate && !customTemplates.includes(trimmedTemplate)) {
       setCustomTemplates((prev) => [...prev, trimmedTemplate]);
       setNewTemplate("");
     }
@@ -68,18 +66,18 @@ export const TimeTemplateSelector = ({
         )}
       </h3>
 
-      {allTemplates.length === 0 && (
+      {customTemplates.length === 0 && (
         <p className="text-sm text-gray-500">
           まだ時刻テンプレートはありません。
         </p>
       )}
-      {allTemplates.length > 0 && (
+      {customTemplates.length > 0 && (
         <div className="mb-4">
           <label className="mb-2 block text-sm font-medium text-gray-700">
             選択中の候補日時に一括で時刻を適用します。
           </label>
           <div className="max-h-48 space-y-1 overflow-y-auto">
-            {allTemplates.map((template) => (
+            {customTemplates.map((template) => (
               <div key={template} className="flex items-center gap-2">
                 <button
                   type="button"
@@ -104,7 +102,7 @@ export const TimeTemplateSelector = ({
         </div>
       )}
 
-      <div className={`${allTemplates.length > 0 ? "border-t" : ""} pt-4`}>
+      <div className={`${customTemplates.length > 0 ? "border-t" : ""} pt-4`}>
         <label
           htmlFor="add-time-input"
           className="mb-2 block text-sm font-medium text-gray-700"
