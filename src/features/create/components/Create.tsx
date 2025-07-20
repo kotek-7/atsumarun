@@ -167,16 +167,6 @@ export default function Create() {
                       <div className="flex items-center gap-1">
                         <button
                           type="button"
-                          onClick={handleRemoveSelectedOptions}
-                          disabled={
-                            !dateOptions.some((option) => option.selected)
-                          }
-                          className="text-danger-600 hover:bg-danger-50 hover:text-danger-800 rounded px-2 py-1 text-sm font-medium transition-colors duration-200 disabled:text-gray-400 disabled:hover:bg-transparent disabled:hover:text-gray-400"
-                        >
-                          選択した候補を削除
-                        </button>
-                        <button
-                          type="button"
                           onClick={handleSelectAll}
                           disabled={dateOptions.length === 0}
                           className="rounded px-2 py-1 text-sm font-medium text-gray-600 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-800 disabled:text-gray-400 disabled:hover:bg-transparent disabled:hover:text-gray-400"
@@ -195,8 +185,18 @@ export default function Create() {
                         </button>
                         <button
                           type="button"
+                          onClick={handleRemoveSelectedOptions}
+                          disabled={
+                            !dateOptions.some((option) => option.selected)
+                          }
+                          className="text-danger-600 hover:bg-danger-50 hover:text-danger-800 rounded px-2 py-1 text-sm font-medium transition-colors duration-200 disabled:text-gray-400 disabled:hover:bg-transparent disabled:hover:text-gray-400"
+                        >
+                          選択した候補を削除
+                        </button>
+                        <button
+                          type="button"
                           onClick={handleAddDateOption}
-                          className="text-primary-600 hover:bg-primary-50 hover:text-primary-800 rounded px-2 py-1 text-sm font-medium transition-colors duration-200"
+                          className="bg-secondary-600 hover:bg-secondary-700 rounded px-4 py-1.5 text-sm font-medium text-white transition-colors duration-200"
                         >
                           + 日時を追加
                         </button>

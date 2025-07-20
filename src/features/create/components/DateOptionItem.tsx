@@ -47,6 +47,10 @@ export function DateOptionItem({
       ref={setNodeRef}
       style={style}
       {...attributes}
+      onClick={(e) => {
+        onItemClick(index, e);
+        console.log("Item clicked", index);
+      }}
       className={`mb-3 flex items-center gap-2 rounded p-2 transition-colors ${
         isDragging
           ? "border-primary-300 bg-primary-100 border shadow-lg"
@@ -66,10 +70,8 @@ export function DateOptionItem({
         </svg>
       </div>
 
-      {/* クリック可能エリア */}
       <div
-        onClick={(e) => onItemClick(index, e)}
-        className="flex flex-1 cursor-pointer items-center gap-2"
+        className="flex flex-1 cursor-pointer items-center gap-4"
         style={{ userSelect: "none" }}
       >
         {/* 選択インジケーター */}
@@ -97,8 +99,8 @@ export function DateOptionItem({
         </div>
 
         {/* 日付と時間の編集 */}
-        <div className="flex flex-1 items-center gap-3">
-          <div className="flex-1" onClick={(e) => e.stopPropagation()}>
+        <div className="flex flex-1 items-center gap-4">
+          <div onClick={(e) => e.stopPropagation()}>
             <DatePicker
               selected={option.date ? new Date(option.date) : null}
               onChange={(date: Date | null) => {
