@@ -61,15 +61,15 @@ export default function Join() {
             <h1 className="text-2xl font-bold text-gray-900">イベントに参加</h1>
           </div>
 
-          <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
-            <h2 className="mb-2 text-lg font-semibold text-blue-900">
+          <div className="mb-6 rounded-lg border border-primary-200 bg-primary-50 p-4">
+            <h2 className="mb-2 text-lg font-semibold text-primary-900">
               {mockEventData.title}
             </h2>
-            <p className="mb-2 text-sm text-blue-700">
+            <p className="mb-2 text-sm text-primary-700">
               主催者: {mockEventData.hostName}
             </p>
             {mockEventData.description && (
-              <p className="text-sm text-blue-700">
+              <p className="text-sm text-primary-700">
                 {mockEventData.description}
               </p>
             )}
@@ -94,7 +94,7 @@ export default function Join() {
                     name: e.target.value,
                   }))
                 }
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-primary-500 focus:outline-none"
                 placeholder="山田花子"
               />
             </div>
@@ -109,7 +109,7 @@ export default function Join() {
                     key={index}
                     className={`flex cursor-pointer items-center rounded-md border p-3 transition-colors ${
                       participantData.availableOptions.includes(index)
-                        ? "border-blue-300 bg-blue-50"
+                        ? "border-primary-300 bg-primary-50"
                         : "border-gray-300 bg-white hover:bg-gray-50"
                     }`}
                   >
@@ -117,7 +117,7 @@ export default function Join() {
                       type="checkbox"
                       checked={participantData.availableOptions.includes(index)}
                       onChange={() => handleOptionToggle(index)}
-                      className="mr-3 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="mr-3 h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                     />
                     <div className="flex-1">
                       <span className="font-medium text-gray-900">
@@ -133,7 +133,7 @@ export default function Join() {
                 ))}
               </div>
               {participantData.availableOptions.length === 0 && (
-                <p className="mt-2 text-sm text-red-500">
+                <p className="mt-2 text-sm text-danger-500">
                   少なくとも1つの日時を選択してください
                 </p>
               )}
@@ -156,7 +156,7 @@ export default function Join() {
                     message: e.target.value,
                   }))
                 }
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-primary-500 focus:outline-none"
                 placeholder="ご質問やご要望があればお書きください"
               />
             </div>
@@ -164,7 +164,7 @@ export default function Join() {
             <button
               type="submit"
               disabled={participantData.availableOptions.length === 0}
-              className="w-full rounded-md bg-green-600 px-4 py-2 font-medium text-white transition-colors duration-200 hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-400"
+              className="w-full rounded-md bg-secondary-600 px-4 py-2 font-medium text-white transition-colors duration-200 hover:bg-secondary-700 focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-400"
             >
               参加登録する
             </button>

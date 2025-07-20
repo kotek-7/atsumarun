@@ -132,7 +132,7 @@ export default function Create() {
                           title: e.target.value,
                         }))
                       }
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-primary-500 focus:outline-none"
                       placeholder="例: チームミーティング"
                     />
                   </div>
@@ -154,7 +154,7 @@ export default function Create() {
                           description: e.target.value,
                         }))
                       }
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-primary-500 focus:outline-none"
                       placeholder="イベントの詳細を入力してください"
                     />
                   </div>
@@ -172,7 +172,7 @@ export default function Create() {
                           disabled={
                             !dateOptions.some((option) => option.selected)
                           }
-                          className="rounded px-2 py-1 text-sm font-medium text-red-600 transition-colors duration-200 hover:bg-red-50 hover:text-red-800 disabled:text-gray-400 disabled:hover:bg-transparent disabled:hover:text-gray-400"
+                          className="rounded px-2 py-1 text-sm font-medium text-danger-600 transition-colors duration-200 hover:bg-danger-50 hover:text-danger-800 disabled:text-gray-400 disabled:hover:bg-transparent disabled:hover:text-gray-400"
                         >
                           選択した候補を削除
                         </button>
@@ -197,7 +197,7 @@ export default function Create() {
                         <button
                           type="button"
                           onClick={handleAddDateOption}
-                          className="rounded px-2 py-1 text-sm font-medium text-blue-600 transition-colors duration-200 hover:bg-blue-50 hover:text-blue-800"
+                          className="rounded px-2 py-1 text-sm font-medium text-primary-600 transition-colors duration-200 hover:bg-primary-50 hover:text-primary-800"
                         >
                           + 日時を追加
                         </button>
@@ -218,7 +218,7 @@ export default function Create() {
 
                   <button
                     type="submit"
-                    className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors duration-200 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
+                    className="w-full rounded-md bg-primary-600 px-4 py-2 font-medium text-white transition-colors duration-200 hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:outline-none"
                   >
                     イベントを作成する
                   </button>

@@ -66,9 +66,9 @@ function SortableDateItem({
       {...attributes}
       className={`mb-3 flex items-center gap-2 rounded p-2 transition-colors ${
         isDragging
-          ? "border border-blue-300 bg-blue-100 shadow-lg"
+          ? "border border-primary-300 bg-primary-100 shadow-lg"
           : isSelected
-            ? "border border-blue-200 bg-blue-50"
+            ? "border border-primary-200 bg-primary-50"
             : "border border-transparent hover:bg-gray-50"
       }`}
     >
@@ -95,7 +95,7 @@ function SortableDateItem({
             onCheckboxClick(index, e);
           }}
           className={`flex h-5 w-5 items-center justify-center rounded border-2 ${
-            isSelected ? "border-blue-600 bg-blue-600" : "border-gray-300"
+            isSelected ? "border-primary-600 bg-primary-600" : "border-gray-300"
           }`}
         >
           {isSelected && (
@@ -122,7 +122,7 @@ function SortableDateItem({
               e.stopPropagation();
               onDateChange(index, e.target.value);
             }}
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-primary-500 focus:outline-none"
             required
           />
           <input
@@ -132,7 +132,7 @@ function SortableDateItem({
               e.stopPropagation();
               onTimeChange(index, e.target.value);
             }}
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-primary-500 focus:outline-none"
             placeholder="時間（オプション）"
           />
           <button
@@ -141,7 +141,7 @@ function SortableDateItem({
               e.stopPropagation();
               onDelete(index);
             }}
-            className="px-2 py-1 text-red-600 hover:text-red-800"
+            className="px-2 py-1 text-danger-600 hover:text-danger-800"
           >
             削除
           </button>

@@ -89,7 +89,7 @@ export const TimeTemplateSelector = ({
                   type="button"
                   onMouseDown={(e) => e.preventDefault()} // Prevent focus loss
                   onClick={() => removeCustomTemplate(template)}
-                  className="rounded p-2 text-red-600 hover:bg-red-50 hover:text-red-800"
+                  className="rounded p-2 text-danger-600 hover:bg-danger-50 hover:text-danger-800"
                   title="削除"
                 >
                   🗑️
@@ -119,13 +119,13 @@ export const TimeTemplateSelector = ({
             type="text"
             value={newTemplate}
             onChange={(e) => setNewTemplate(e.target.value)}
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-primary-500 focus:outline-none"
             placeholder="例: 9:00, 午前中, ランチタイム"
           />
           <button
             type="submit"
             onMouseDown={(e) => e.preventDefault()} // Prevent focus loss
-            className="rounded-md bg-green-600 px-3 py-2 text-sm text-white hover:bg-green-700"
+            className="rounded-md bg-secondary-600 px-3 py-2 text-sm text-white hover:bg-secondary-700"
           >
             追加
           </button>
