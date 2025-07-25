@@ -17,6 +17,7 @@ export const TimeTemplateSelector = ({
     "15:00",
   ]);
   const [newTemplate, setNewTemplate] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Load custom templates from localStorage on component mount
   useEffect(() => {
@@ -55,6 +56,15 @@ export const TimeTemplateSelector = ({
     );
   };
 
+  const handleTimeTemplateClick = (template: string) => {
+    if (selectedDateIndexes.length === 0) {
+      setErrorMessage("候補日時を選択してから時刻を設定してください。");
+      return;
+    }
+    setErrorMessage(""); // エラーメッセージをクリア
+    onTimeChange(template);
+  };
+
   return (
     <div className="time-template-panel rounded-lg border border-gray-300 bg-white p-4 shadow-sm">
       <h3 className="mb-4 text-lg font-semibold text-gray-900">
@@ -65,6 +75,19 @@ export const TimeTemplateSelector = ({
           </span>
         )}
       </h3>
+
+      {errorMessage && (
+        <div className="mb-4 rounded-md border border-red-300 bg-red-50 p-3">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <span className="text-red-500">⚠️</span>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-red-800">{errorMessage}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {customTemplates.length === 0 && (
         <p className="text-sm text-gray-500">
@@ -82,7 +105,7 @@ export const TimeTemplateSelector = ({
                 <button
                   type="button"
                   onMouseDown={(e) => e.preventDefault()} // Prevent focus loss
-                  onClick={() => onTimeChange(template)}
+                  onClick={() => handleTimeTemplateClick(template)}
                   className="flex-1 rounded border border-gray-300 bg-white px-3 py-2 text-left text-sm text-gray-700 shadow hover:bg-gray-50"
                 >
                   {template}
