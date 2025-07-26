@@ -18,6 +18,7 @@ import {
 } from "@dnd-kit/sortable";
 import { DateOptionWithUI } from "@/features/create/types";
 import { DateOptionItem } from "./DateOptionItem";
+import { useClickOutside } from "@/features/create/hooks/useClickOutside";
 
 interface DateOptionsListProps {
   dateOptions: DateOptionWithUI[];
@@ -87,6 +88,16 @@ export const DateOptionsList = ({
     }));
     setDateOptions(newDateOptions);
   };
+
+  // リスト外部クリックで選択を解除
+  const listRef = useClickOutside(() => {
+    const newDateOptions = dateOptions.map((option) => ({
+      ...option,
+      selected: false,
+    }));
+    setDateOptions(newDateOptions);
+    setLastSelectedIndex(null);
+  });
 
   const handleCheckboxClick = (index: number, event: React.MouseEvent) => {
     event.stopPropagation(); // クリックイベントの伝播を防ぐ
@@ -160,7 +171,7 @@ export const DateOptionsList = ({
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        <div className="flex flex-col gap-1">
+        <div ref={listRef} className="flex flex-col gap-1">
           {dateOptions.map((option, index) => (
             <DateOptionItem
               key={option.id}
