@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar } from "@/features/create/components/Calendar";
 import { TimeTemplateSelector } from "@/features/create/components/TimeTemplateSelector";
@@ -86,7 +86,11 @@ export default function Create() {
 
   const handleDeselectAll = () => {
     setDateOptions((prev) =>
-      prev.map((option) => ({ ...option, selected: false }))
+      prev.map((option) => ({
+        ...option,
+        selected: false,
+        timeFocused: false,
+      }))
     );
   };
 
@@ -95,6 +99,37 @@ export default function Create() {
     console.log("Event created:", eventData);
     router.push("/results");
   };
+
+  // ESCキーでの選択解除機能
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        // 選択されている項目があるかチェック
+        const hasSelectedItems = dateOptions.some((option) => option.selected);
+        const hasFocusedItems = dateOptions.some(
+          (option) => option.timeFocused
+        );
+
+        if (hasSelectedItems || hasFocusedItems) {
+          event.preventDefault(); // デフォルトのESC動作を防止
+          // フォーカスをクリア
+          const activeElement = document.activeElement as HTMLElement;
+          if (activeElement && activeElement.blur) {
+            activeElement.blur();
+          }
+          handleDeselectAll();
+        }
+      }
+    };
+
+    // イベントリスナーを追加
+    document.addEventListener("keydown", handleKeyDown);
+
+    // クリーンアップ関数
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [dateOptions]);
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
