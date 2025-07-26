@@ -7,7 +7,6 @@ export default function Results() {
 
   const mockResults = {
     eventTitle: "チームミーティング",
-    hostName: "田中太郎",
     dateOptions: [
       {
         date: "2024-01-15",
@@ -46,7 +45,7 @@ export default function Results() {
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">結果発表</h1>
                 <p className="mt-1 text-gray-600">
-                  {mockResults.eventTitle} - 主催者: {mockResults.hostName}
+                  {mockResults.eventTitle}
                 </p>
               </div>
               <button
