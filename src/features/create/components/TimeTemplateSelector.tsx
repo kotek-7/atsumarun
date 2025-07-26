@@ -9,7 +9,7 @@ interface TimeTemplatePanelProps {
 
 export const TimeTemplateSelector = ({
   dateOptionCountToChange,
-  onTimeSelect
+  onTimeSelect,
 }: TimeTemplatePanelProps) => {
   const [customTemplates, setCustomTemplates] = useState<string[]>([
     "9:00",
@@ -66,7 +66,10 @@ export const TimeTemplateSelector = ({
   };
 
   return (
-    <div className="time-template-panel rounded-lg border border-gray-300 bg-white p-4 shadow-sm">
+    <div
+      onMouseDown={(e) => e.preventDefault()}
+      className="time-template-panel rounded-lg border border-gray-300 bg-white p-4 shadow-sm"
+    >
       <h3 className="mb-4 text-lg font-semibold text-gray-900">
         テンプレートから時刻を選択
         {dateOptionCountToChange > 0 && (
@@ -106,7 +109,7 @@ export const TimeTemplateSelector = ({
                   type="button"
                   onMouseDown={(e) => e.preventDefault()} // Prevent focus loss
                   onClick={() => handleTimeTemplateClick(template)}
-                  className="flex-1 rounded border border-gray-300 bg-white px-3 py-2 text-left text-sm text-gray-700 shadow hover:bg-gray-50"
+                  className="flex-1 rounded border border-gray-300 bg-white px-3 py-2 text-left text-sm text-gray-700 shadow transition hover:bg-gray-100"
                 >
                   {template}
                 </button>
