@@ -139,9 +139,14 @@ export const DateOptionsList = ({
 
   const handleTimeFocus = (index: number) => {
     const newDateOptions = dateOptions.map((opt, i) =>
-      i === index
-        ? { ...opt, timeFocused: true }
-        : { ...opt, timeFocused: false }
+      i === index ? { ...opt, timeFocused: true } : opt
+    );
+    setDateOptions(newDateOptions);
+  };
+
+  const handleTimeUnfocus = (index: number) => {
+    const newDateOptions = dateOptions.map((opt, i) =>
+      i === index ? { ...opt, timeFocused: false } : opt
     );
     setDateOptions(newDateOptions);
   };
@@ -155,7 +160,7 @@ export const DateOptionsList = ({
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        <div className="space-y-2">
+        <div className="flex flex-col gap-1">
           {dateOptions.map((option, index) => (
             <DateOptionItem
               key={option.id}
@@ -168,6 +173,7 @@ export const DateOptionsList = ({
               onTimeChange={handleTimeChange}
               onDelete={handleDelete}
               onTimeFocus={handleTimeFocus}
+              onTimeUnfocus={handleTimeUnfocus}
             />
           ))}
         </div>

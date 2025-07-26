@@ -3,13 +3,13 @@
 import { useState, useEffect } from "react";
 
 interface TimeTemplatePanelProps {
-  selectedDateIndexes: number[];
-  updateSelectedTime: (time: string) => void;
+  dateOptionCountToChange: number;
+  onTimeSelect: (time: string) => void;
 }
 
 export const TimeTemplateSelector = ({
-  selectedDateIndexes,
-  updateSelectedTime: onTimeChange,
+  dateOptionCountToChange,
+  onTimeSelect
 }: TimeTemplatePanelProps) => {
   const [customTemplates, setCustomTemplates] = useState<string[]>([
     "9:00",
@@ -57,21 +57,21 @@ export const TimeTemplateSelector = ({
   };
 
   const handleTimeTemplateClick = (template: string) => {
-    if (selectedDateIndexes.length === 0) {
+    if (dateOptionCountToChange === 0) {
       setErrorMessage("候補日時を選択してから時刻を設定してください。");
       return;
     }
     setErrorMessage(""); // エラーメッセージをクリア
-    onTimeChange(template);
+    onTimeSelect(template);
   };
 
   return (
     <div className="time-template-panel rounded-lg border border-gray-300 bg-white p-4 shadow-sm">
       <h3 className="mb-4 text-lg font-semibold text-gray-900">
         テンプレートから時刻を選択
-        {selectedDateIndexes.length > 0 && (
+        {dateOptionCountToChange > 0 && (
           <span className="ml-2 text-sm font-normal text-gray-600">
-            ({selectedDateIndexes.length}件選択中)
+            ({dateOptionCountToChange}件選択中)
           </span>
         )}
       </h3>

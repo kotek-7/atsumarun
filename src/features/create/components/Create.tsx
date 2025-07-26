@@ -56,7 +56,9 @@ export default function Create() {
 
   const updateSelectedTime = (time: string) => {
     const selectedIndexes = dateOptions
-      .map((option, index) => (option.selected || option.timeFocused ? index : -1))
+      .map((option, index) =>
+        option.selected || option.timeFocused ? index : -1
+      )
       .filter((index) => index !== -1);
 
     console.log(
@@ -236,10 +238,12 @@ export default function Create() {
               />
 
               <TimeTemplateSelector
-                selectedDateIndexes={dateOptions
-                  .map((option, index) => (option.selected ? index : -1))
-                  .filter((index) => index !== -1)}
-                updateSelectedTime={updateSelectedTime}
+                dateOptionCountToChange={
+                  dateOptions.filter(
+                    (option) => option.selected || option.timeFocused
+                  ).length
+                }
+                onTimeSelect={updateSelectedTime}
               />
             </div>
           </div>
