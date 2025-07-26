@@ -137,6 +137,15 @@ export const DateOptionsList = ({
     setDateOptions(newDateOptions);
   };
 
+  const handleTimeFocus = (index: number) => {
+    const newDateOptions = dateOptions.map((opt, i) =>
+      i === index
+        ? { ...opt, timeFocused: true }
+        : { ...opt, timeFocused: false }
+    );
+    setDateOptions(newDateOptions);
+  };
+
   const items = dateOptions.map((option) => option.id);
 
   return (
@@ -158,6 +167,7 @@ export const DateOptionsList = ({
               onDateChange={handleDateChange}
               onTimeChange={handleTimeChange}
               onDelete={handleDelete}
+              onTimeFocus={handleTimeFocus}
             />
           ))}
         </div>

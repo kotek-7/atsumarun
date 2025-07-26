@@ -56,7 +56,7 @@ export default function Create() {
 
   const updateSelectedTime = (time: string) => {
     const selectedIndexes = dateOptions
-      .map((option, index) => (option.selected ? index : -1))
+      .map((option, index) => (option.selected || option.timeFocused ? index : -1))
       .filter((index) => index !== -1);
 
     console.log(

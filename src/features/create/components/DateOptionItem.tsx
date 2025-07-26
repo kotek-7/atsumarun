@@ -16,6 +16,7 @@ interface DateOptionItemProps {
   onDateChange: (index: number, value: string) => void;
   onTimeChange: (index: number, value: string) => void;
   onDelete: (index: number) => void;
+  onTimeFocus: (index: number) => void;
 }
 
 export function DateOptionItem({
@@ -27,6 +28,7 @@ export function DateOptionItem({
   onDateChange,
   onTimeChange,
   onDelete,
+  onTimeFocus,
 }: DateOptionItemProps) {
   const {
     attributes,
@@ -121,6 +123,11 @@ export function DateOptionItem({
             onChange={(e) => {
               e.stopPropagation();
               onTimeChange(index, e.target.value);
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onFocus={(e) => {
+              e.stopPropagation();
+              onTimeFocus(index);
             }}
             className="focus:ring-primary-500 flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
             placeholder="時間（オプション）"
