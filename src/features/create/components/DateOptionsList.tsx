@@ -16,7 +16,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { DateOptionWithUI } from "@/features/create/types";
+import { DateOptionWithUI } from "@/features/create/types/dateOptionWithUI";
 import { DateOptionItem } from "./DateOptionItem";
 import { useClickOutside } from "@/features/create/hooks/useClickOutside";
 

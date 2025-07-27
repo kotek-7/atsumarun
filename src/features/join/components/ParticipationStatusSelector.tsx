@@ -1,6 +1,6 @@
 "use client";
 
-import { ParticipationStatus } from "@/types";
+import { ParticipationStatus } from "@/types/participation";
 
 interface ParticipationStatusSelectorProps {
   status: ParticipationStatus | null;

@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { DateOptionResult, ParticipationStatus } from "@/types";
+import { DateOptionResult } from "@/types/results";
+import { ParticipationStatus } from "@/types/participation";
 
 export default function Results() {
   const router = useRouter();

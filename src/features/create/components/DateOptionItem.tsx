@@ -5,7 +5,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { DateOptionWithUI } from "@/features/create/types";
+import { DateOptionWithUI } from "@/features/create/types/dateOptionWithUI";
 
 interface DateOptionItemProps {
   option: DateOptionWithUI;

@@ -1,4 +1,3 @@
-// 選択状態を含む、フロント用の日付候補の型
 export interface DateOptionWithUI {
   id: string;
   date: string; // 日付の文字列（例: "2023-10-01"）

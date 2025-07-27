@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ParticipationStatus } from "@/types";
+import { ParticipationStatus } from "@/types/participation";
 import { ParticipationStatusSelector } from "./ParticipationStatusSelector";
 
 interface ParticipantResponse {
