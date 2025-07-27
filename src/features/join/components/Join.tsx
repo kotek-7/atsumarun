@@ -2,13 +2,20 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ParticipantData } from "@/features/shared/types";
+import { ParticipationStatus } from "@/features/shared/types";
+import { ParticipationStatusSelector } from "./ParticipationStatusSelector";
+
+interface ParticipantResponse {
+  name: string;
+  responses: Record<number, ParticipationStatus>;
+  message: string;
+}
 
 export default function Join() {
   const router = useRouter();
-  const [participantData, setParticipantData] = useState<ParticipantData>({
+  const [participantData, setParticipantData] = useState<ParticipantResponse>({
     name: "",
-    availableOptions: [],
+    responses: {},
     message: "",
   });
 
@@ -32,12 +39,13 @@ export default function Join() {
     return `${month}/${day}(${dayOfWeek})`;
   };
 
-  const handleOptionToggle = (index: number) => {
+  const handleStatusChange = (optionIndex: number, status: ParticipationStatus) => {
     setParticipantData((prev) => ({
       ...prev,
-      availableOptions: prev.availableOptions.includes(index)
-        ? prev.availableOptions.filter((i) => i !== index)
-        : [...prev.availableOptions, index],
+      responses: {
+        ...prev.responses,
+        [optionIndex]: status,
+      },
     }));
   };
 
@@ -46,6 +54,9 @@ export default function Join() {
     console.log("Participant response:", participantData);
     router.push("/results");
   };
+
+  // 少なくとも一つの回答があるかチェック
+  const hasAnyResponse = Object.keys(participantData.responses).length > 0;
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
@@ -101,25 +112,12 @@ export default function Join() {
 
             <div>
               <label className="mb-4 block text-sm font-medium text-gray-700">
-                参加可能な日時を選択してください *
+                各日時への参加可否をお答えください *
               </label>
-              <div className="space-y-2">
+              <div className="space-y-6">
                 {mockEventData.dateOptions.map((option, index) => (
-                  <label
-                    key={index}
-                    className={`flex cursor-pointer items-center rounded-md border p-3 transition-colors ${
-                      participantData.availableOptions.includes(index)
-                        ? "border-primary-300 bg-primary-50"
-                        : "border-gray-300 bg-white hover:bg-gray-50"
-                    }`}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={participantData.availableOptions.includes(index)}
-                      onChange={() => handleOptionToggle(index)}
-                      className="text-primary-600 focus:ring-primary-500 mr-3 h-4 w-4 rounded border-gray-300"
-                    />
-                    <div className="flex-1">
+                  <div key={index} className="rounded-lg border border-gray-200 p-4">
+                    <div className="mb-3">
                       <span className="font-medium text-gray-900">
                         {formatDate(option.date)}
                       </span>
@@ -129,12 +127,17 @@ export default function Join() {
                         </span>
                       )}
                     </div>
-                  </label>
+                    <ParticipationStatusSelector
+                      status={participantData.responses[index] || null}
+                      onChange={(status) => handleStatusChange(index, status)}
+                      optionIndex={index}
+                    />
+                  </div>
                 ))}
               </div>
-              {participantData.availableOptions.length === 0 && (
-                <p className="text-danger-500 mt-2 text-sm">
-                  少なくとも1つの日時を選択してください
+              {!hasAnyResponse && (
+                <p className="text-danger-500 mt-4 text-sm">
+                  少なくとも1つの日時にお答えください
                 </p>
               )}
             </div>
@@ -163,7 +166,7 @@ export default function Join() {
 
             <button
               type="submit"
-              disabled={participantData.availableOptions.length === 0}
+              disabled={!hasAnyResponse}
               className="bg-secondary-600 hover:bg-secondary-700 focus:ring-secondary-500 w-full rounded-md px-4 py-2 font-medium text-white transition-colors duration-200 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-400"
             >
               参加登録する

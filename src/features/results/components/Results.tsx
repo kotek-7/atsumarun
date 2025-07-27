@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { DateOptionResult, ParticipationStatus } from "@/features/shared/types";
 
 export default function Results() {
   const router = useRouter();
@@ -11,16 +12,39 @@ export default function Results() {
       {
         date: "2024-01-15",
         time: "10:00",
-        participants: ["田中太郎", "佐藤花子", "鈴木一郎"],
+        participants: [
+          { name: "田中太郎", status: "available" as ParticipationStatus },
+          { name: "佐藤花子", status: "available" as ParticipationStatus },
+          { name: "鈴木一郎", status: "maybe" as ParticipationStatus },
+        ],
       },
-      { date: "2024-01-16", time: "14:00", participants: ["田中太郎", "佐藤花子"] },
+      {
+        date: "2024-01-16",
+        time: "14:00",
+        participants: [
+          { name: "田中太郎", status: "available" as ParticipationStatus },
+          { name: "佐藤花子", status: "maybe" as ParticipationStatus },
+          { name: "山田次郎", status: "unavailable" as ParticipationStatus },
+        ],
+      },
       {
         date: "2024-01-17",
         time: "09:00",
-        participants: ["田中太郎", "鈴木一郎", "山田次郎"],
+        participants: [
+          { name: "田中太郎", status: "available" as ParticipationStatus },
+          { name: "鈴木一郎", status: "available" as ParticipationStatus },
+          { name: "山田次郎", status: "available" as ParticipationStatus },
+        ],
       },
-      { date: "2024-01-18", time: "15:30", participants: ["田中太郎"] },
-    ],
+      {
+        date: "2024-01-18",
+        time: "15:30",
+        participants: [
+          { name: "田中太郎", status: "maybe" as ParticipationStatus },
+          { name: "佐藤花子", status: "unavailable" as ParticipationStatus },
+        ],
+      },
+    ] as DateOptionResult[],
   };
 
   const formatDate = (dateString: string) => {
@@ -31,14 +55,46 @@ export default function Results() {
     return `${month}/${day}(${dayOfWeek})`;
   };
 
-  const sortedOptions = [...mockResults.dateOptions].sort(
-    (a, b) => b.participants.length - a.participants.length
+  // 参加状態の表示記号とスタイルを取得
+  const getStatusDisplay = (status: ParticipationStatus) => {
+    switch (status) {
+      case "available":
+        return { symbol: "○", color: "text-green-600", bgColor: "bg-green-50" };
+      case "maybe":
+        return { symbol: "△", color: "text-yellow-600", bgColor: "bg-yellow-50" };
+      case "unavailable":
+        return { symbol: "×", color: "text-red-600", bgColor: "bg-red-50" };
+    }
+  };
+
+  // 全参加者のユニークリストを取得
+  const allParticipants = Array.from(
+    new Set(
+      mockResults.dateOptions.flatMap(option => 
+        option.participants.map(p => p.name)
+      )
+    )
   );
-  const maxParticipants = sortedOptions[0]?.participants.length || 0;
+
+  // 各日程の参加状態別人数を計算
+  const getStatusCounts = (participants: { status: ParticipationStatus }[]) => {
+    return {
+      available: participants.filter(p => p.status === "available").length,
+      maybe: participants.filter(p => p.status === "maybe").length,
+      unavailable: participants.filter(p => p.status === "unavailable").length,
+    };
+  };
+
+  // 参加者の特定日程での参加状態を取得
+  const getParticipantStatus = (participantName: string, optionIndex: number): ParticipationStatus | null => {
+    const option = mockResults.dateOptions[optionIndex];
+    const participant = option.participants.find(p => p.name === participantName);
+    return participant ? participant.status : null;
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-6xl">
         <div className="overflow-hidden rounded-lg bg-white shadow-md">
           <div className="px-6 py-8">
             <div className="mb-6 flex items-center justify-between">
@@ -58,96 +114,110 @@ export default function Results() {
 
             <div className="mb-6">
               <h2 className="mb-4 text-lg font-semibold text-gray-900">
-                候補日時の結果
+                参加状況マトリックス
               </h2>
-              <div className="space-y-4">
-                {sortedOptions.map((option, index) => (
-                  <div
-                    key={index}
-                    className={`rounded-lg border p-4 ${
-                      option.participants.length === maxParticipants &&
-                      maxParticipants > 1
-                        ? "border-secondary-300 bg-secondary-50"
-                        : "border-gray-300"
-                    }`}
-                  >
-                    <div className="mb-3 flex items-center justify-between">
-                      <div className="flex items-center">
-                        <span className="font-medium text-gray-900">
-                          {formatDate(option.date)}
-                        </span>
-                        {option.time && (
-                          <span className="ml-2 text-gray-600">
-                            {option.time}
-                          </span>
-                        )}
-                        {option.participants.length === maxParticipants &&
-                          maxParticipants > 1 && (
-                            <span className="bg-secondary-100 text-secondary-800 ml-2 rounded-full px-2 py-1 text-xs font-medium">
-                              最多
+              
+              {/* マトリックステーブル */}
+              <div className="overflow-x-auto">
+                <table className="min-w-full border-collapse">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-900">
+                        日程
+                      </th>
+                      <th className="border border-gray-300 px-3 py-3 text-center font-semibold text-green-700">
+                        ○
+                      </th>
+                      <th className="border border-gray-300 px-3 py-3 text-center font-semibold text-yellow-700">
+                        △
+                      </th>
+                      <th className="border border-gray-300 px-3 py-3 text-center font-semibold text-red-700">
+                        ×
+                      </th>
+                      {allParticipants.map((participant, index) => (
+                        <th
+                          key={index}
+                          className="border border-gray-300 px-3 py-3 text-center font-medium text-gray-900"
+                        >
+                          <div className="min-w-20 break-words text-sm">
+                            {participant}
+                          </div>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {mockResults.dateOptions.map((option, optionIndex) => {
+                      const statusCounts = getStatusCounts(option.participants);
+                      return (
+                        <tr key={optionIndex} className="hover:bg-gray-50">
+                          <td className="border border-gray-300 px-4 py-3 font-medium text-gray-900">
+                            <div>
+                              {formatDate(option.date)}
+                              {option.time && (
+                                <div className="text-sm text-gray-600">
+                                  {option.time}
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                          <td className="border border-gray-300 px-3 py-3 text-center">
+                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-green-100 font-bold text-green-700">
+                              {statusCounts.available}
                             </span>
-                          )}
-                      </div>
-                      <div className="flex items-center">
-                        <span className="text-lg font-semibold text-gray-900">
-                          {option.participants.length}人
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="mb-2">
-                      <div className="h-2 w-full rounded-full bg-gray-200">
-                        <div
-                          className={`h-2 rounded-full ${
-                            option.participants.length === maxParticipants &&
-                            maxParticipants > 1
-                              ? "bg-secondary-500"
-                              : "bg-primary-500"
-                          }`}
-                          style={{
-                            width: `${maxParticipants > 0 ? (option.participants.length / maxParticipants) * 100 : 0}%`,
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-
-                    <div className="text-sm text-gray-600">
-                      <span className="font-medium">参加者: </span>
-                      {option.participants.length > 0 ? (
-                        option.participants.join(", ")
-                      ) : (
-                        <span className="text-gray-400">参加者なし</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                          </td>
+                          <td className="border border-gray-300 px-3 py-3 text-center">
+                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-yellow-100 font-bold text-yellow-700">
+                              {statusCounts.maybe}
+                            </span>
+                          </td>
+                          <td className="border border-gray-300 px-3 py-3 text-center">
+                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-red-100 font-bold text-red-700">
+                              {statusCounts.unavailable}
+                            </span>
+                          </td>
+                          {allParticipants.map((participant, participantIndex) => {
+                            const status = getParticipantStatus(participant, optionIndex);
+                            const statusDisplay = status ? getStatusDisplay(status) : null;
+                            return (
+                              <td key={participantIndex} className="border border-gray-300 px-3 py-3 text-center">
+                                {statusDisplay ? (
+                                  <span
+                                    className={`inline-flex h-8 w-8 items-center justify-center rounded-full font-bold ${statusDisplay.bgColor} ${statusDisplay.color}`}
+                                  >
+                                    {statusDisplay.symbol}
+                                  </span>
+                                ) : null}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
-            </div>
 
-            <div className="border-t pt-6">
-              <h3 className="mb-4 text-lg font-semibold text-gray-900">参加者一覧</h3>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {Array.from(
-                  new Set(
-                    mockResults.dateOptions.flatMap(
-                      (option) => option.participants
-                    )
-                  )
-                ).map((participant, index) => (
-                  <div key={index} className="rounded-lg bg-gray-50 p-3">
-                    <span className="font-medium text-gray-900">
-                      {participant}
-                    </span>
-                    <div className="mt-1 text-sm text-gray-600">
-                      {
-                        mockResults.dateOptions.filter((option) =>
-                          option.participants.includes(participant)
-                        ).length
-                      }
-                      個の候補に参加
-                    </div>
-                  </div>
-                ))}
+              {/* 凡例 */}
+              <div className="mt-4 flex flex-wrap gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-100 font-bold text-green-700">
+                    ○
+                  </span>
+                  <span>参加可能</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-yellow-100 font-bold text-yellow-700">
+                    △
+                  </span>
+                  <span>検討中</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-red-100 font-bold text-red-700">
+                    ×
+                  </span>
+                  <span>参加不可</span>
+                </div>
               </div>
             </div>
 
