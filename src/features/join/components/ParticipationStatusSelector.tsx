@@ -1,6 +1,6 @@
 "use client";
 
-import { ParticipationStatus } from "@/features/shared/types";
+import { ParticipationStatus } from "@/types";
 
 interface ParticipationStatusSelectorProps {
   status: ParticipationStatus | null;
@@ -66,16 +66,20 @@ export const ParticipationStatusSelector = ({
             onChange={() => onChange(option.value)}
             className="sr-only"
           />
-          <div className={`mr-3 flex h-6 w-6 items-center justify-center rounded-full font-bold ${
-            status === option.value 
-              ? `${option.color} ${option.bgColor}`
-              : "text-gray-400 bg-gray-100"
-          }`}>
+          <div
+            className={`mr-3 flex h-6 w-6 items-center justify-center rounded-full font-bold ${
+              status === option.value
+                ? `${option.color} ${option.bgColor}`
+                : "bg-gray-100 text-gray-400"
+            }`}
+          >
             {option.symbol}
           </div>
-          <span className={`font-medium ${
-            status === option.value ? option.color : "text-gray-700"
-          }`}>
+          <span
+            className={`font-medium ${
+              status === option.value ? option.color : "text-gray-700"
+            }`}
+          >
             {option.label}
           </span>
         </label>

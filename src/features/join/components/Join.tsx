@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ParticipationStatus } from "@/features/shared/types";
+import { ParticipationStatus } from "@/types";
 import { ParticipationStatusSelector } from "./ParticipationStatusSelector";
 
 interface ParticipantResponse {
@@ -39,7 +39,10 @@ export default function Join() {
     return `${month}/${day}(${dayOfWeek})`;
   };
 
-  const handleStatusChange = (optionIndex: number, status: ParticipationStatus) => {
+  const handleStatusChange = (
+    optionIndex: number,
+    status: ParticipationStatus
+  ) => {
     setParticipantData((prev) => ({
       ...prev,
       responses: {
@@ -116,7 +119,10 @@ export default function Join() {
               </label>
               <div className="space-y-6">
                 {mockEventData.dateOptions.map((option, index) => (
-                  <div key={index} className="rounded-lg border border-gray-200 p-4">
+                  <div
+                    key={index}
+                    className="rounded-lg border border-gray-200 p-4"
+                  >
                     <div className="mb-3">
                       <span className="font-medium text-gray-900">
                         {formatDate(option.date)}

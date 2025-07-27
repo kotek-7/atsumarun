@@ -1,4 +1,4 @@
-import { SortableList } from "@/features/shared/components/SortableList/SortableList";
+import { SortableList } from "@/components/SortableList/SortableList";
 
 export default function SortableListPage() {
   return (

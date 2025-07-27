@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { DateOptionResult, ParticipationStatus } from "@/features/shared/types";
+import { DateOptionResult, ParticipationStatus } from "@/types";
 
 export default function Results() {
   const router = useRouter();
@@ -61,7 +61,11 @@ export default function Results() {
       case "available":
         return { symbol: "○", color: "text-green-600", bgColor: "bg-green-50" };
       case "maybe":
-        return { symbol: "△", color: "text-yellow-600", bgColor: "bg-yellow-50" };
+        return {
+          symbol: "△",
+          color: "text-yellow-600",
+          bgColor: "bg-yellow-50",
+        };
       case "unavailable":
         return { symbol: "×", color: "text-red-600", bgColor: "bg-red-50" };
     }
@@ -70,8 +74,8 @@ export default function Results() {
   // 全参加者のユニークリストを取得
   const allParticipants = Array.from(
     new Set(
-      mockResults.dateOptions.flatMap(option => 
-        option.participants.map(p => p.name)
+      mockResults.dateOptions.flatMap((option) =>
+        option.participants.map((p) => p.name)
       )
     )
   );
@@ -79,16 +83,22 @@ export default function Results() {
   // 各日程の参加状態別人数を計算
   const getStatusCounts = (participants: { status: ParticipationStatus }[]) => {
     return {
-      available: participants.filter(p => p.status === "available").length,
-      maybe: participants.filter(p => p.status === "maybe").length,
-      unavailable: participants.filter(p => p.status === "unavailable").length,
+      available: participants.filter((p) => p.status === "available").length,
+      maybe: participants.filter((p) => p.status === "maybe").length,
+      unavailable: participants.filter((p) => p.status === "unavailable")
+        .length,
     };
   };
 
   // 参加者の特定日程での参加状態を取得
-  const getParticipantStatus = (participantName: string, optionIndex: number): ParticipationStatus | null => {
+  const getParticipantStatus = (
+    participantName: string,
+    optionIndex: number
+  ): ParticipationStatus | null => {
     const option = mockResults.dateOptions[optionIndex];
-    const participant = option.participants.find(p => p.name === participantName);
+    const participant = option.participants.find(
+      (p) => p.name === participantName
+    );
     return participant ? participant.status : null;
   };
 
@@ -100,9 +110,7 @@ export default function Results() {
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">結果発表</h1>
-                <p className="mt-1 text-gray-600">
-                  {mockResults.eventTitle}
-                </p>
+                <p className="mt-1 text-gray-600">{mockResults.eventTitle}</p>
               </div>
               <button
                 onClick={() => router.push("/")}
@@ -116,7 +124,7 @@ export default function Results() {
               <h2 className="mb-4 text-lg font-semibold text-gray-900">
                 参加状況マトリックス
               </h2>
-              
+
               {/* マトリックステーブル */}
               <div className="overflow-x-auto">
                 <table className="min-w-full border-collapse">
@@ -139,7 +147,7 @@ export default function Results() {
                           key={index}
                           className="border border-gray-300 px-3 py-3 text-center font-medium text-gray-900"
                         >
-                          <div className="min-w-20 break-words text-sm">
+                          <div className="min-w-20 text-sm break-words">
                             {participant}
                           </div>
                         </th>
@@ -176,21 +184,31 @@ export default function Results() {
                               {statusCounts.unavailable}
                             </span>
                           </td>
-                          {allParticipants.map((participant, participantIndex) => {
-                            const status = getParticipantStatus(participant, optionIndex);
-                            const statusDisplay = status ? getStatusDisplay(status) : null;
-                            return (
-                              <td key={participantIndex} className="border border-gray-300 px-3 py-3 text-center">
-                                {statusDisplay ? (
-                                  <span
-                                    className={`inline-flex h-8 w-8 items-center justify-center rounded-full font-bold ${statusDisplay.bgColor} ${statusDisplay.color}`}
-                                  >
-                                    {statusDisplay.symbol}
-                                  </span>
-                                ) : null}
-                              </td>
-                            );
-                          })}
+                          {allParticipants.map(
+                            (participant, participantIndex) => {
+                              const status = getParticipantStatus(
+                                participant,
+                                optionIndex
+                              );
+                              const statusDisplay = status
+                                ? getStatusDisplay(status)
+                                : null;
+                              return (
+                                <td
+                                  key={participantIndex}
+                                  className="border border-gray-300 px-3 py-3 text-center"
+                                >
+                                  {statusDisplay ? (
+                                    <span
+                                      className={`inline-flex h-8 w-8 items-center justify-center rounded-full font-bold ${statusDisplay.bgColor} ${statusDisplay.color}`}
+                                    >
+                                      {statusDisplay.symbol}
+                                    </span>
+                                  ) : null}
+                                </td>
+                              );
+                            }
+                          )}
                         </tr>
                       );
                     })}

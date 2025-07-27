@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Calendar } from "@/features/create/components/Calendar";
 import { TimeTemplateSelector } from "@/features/create/components/TimeTemplateSelector";
 import { DateOptionsList } from "@/features/create/components/DateOptionsList";
-import { EventData } from "@/features/shared/types";
+import { EventData } from "@/types";
 import { DateOptionWithUI } from "@/features/create/types";
 
 export default function Create() {
