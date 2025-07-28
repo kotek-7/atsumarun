@@ -134,13 +134,13 @@ export default function Results() {
                       <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-900">
                         日程
                       </th>
-                      <th className="border border-gray-300 px-3 py-3 text-center font-semibold text-green-700">
+                      <th className="border border-gray-300 px-3 py-3 text-center font-mono font-semibold text-green-700">
                         ○
                       </th>
-                      <th className="border border-gray-300 px-3 py-3 text-center font-semibold text-yellow-700">
+                      <th className="border border-gray-300 px-3 py-3 text-center font-mono font-semibold text-yellow-700">
                         △
                       </th>
-                      <th className="border border-gray-300 px-3 py-3 text-center font-semibold text-red-700">
+                      <th className="border border-gray-300 px-3 py-3 text-center font-mono font-semibold text-red-700">
                         ×
                       </th>
                       {allParticipants.map((participant, index) => (
@@ -171,17 +171,17 @@ export default function Results() {
                             </div>
                           </td>
                           <td className="border border-gray-300 px-3 py-3 text-center">
-                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-green-100 font-bold text-green-700">
+                            <span className="inline-flex h-8 w-8 items-center justify-center font-bold text-green-700">
                               {statusCounts.available}
                             </span>
                           </td>
                           <td className="border border-gray-300 px-3 py-3 text-center">
-                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-yellow-100 font-bold text-yellow-700">
+                            <span className="inline-flex h-8 w-8 items-center justify-center font-bold text-yellow-700">
                               {statusCounts.maybe}
                             </span>
                           </td>
                           <td className="border border-gray-300 px-3 py-3 text-center">
-                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-red-100 font-bold text-red-700">
+                            <span className="inline-flex h-8 w-8 items-center justify-center font-bold text-red-700">
                               {statusCounts.unavailable}
                             </span>
                           </td>
@@ -220,19 +220,19 @@ export default function Results() {
               {/* 凡例 */}
               <div className="mt-4 flex flex-wrap gap-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-100 font-bold text-green-700">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-green-100 font-mono font-bold text-green-700">
                     ○
                   </span>
                   <span>参加可能</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-yellow-100 font-bold text-yellow-700">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-yellow-100 font-mono font-bold text-yellow-700">
                     △
                   </span>
                   <span>検討中</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-red-100 font-bold text-red-700">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-red-100 font-mono font-bold text-red-700">
                     ×
                   </span>
                   <span>参加不可</span>
