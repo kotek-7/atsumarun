@@ -61,6 +61,46 @@ export default function Results() {
           { name: "山田6", status: "available" as ParticipationStatus },
         ],
       },
+      {
+        date: "2024-01-15",
+        time: "10:00",
+        participants: [
+          { name: "田中太郎", status: "available" as ParticipationStatus },
+          { name: "佐藤花子", status: "available" as ParticipationStatus },
+          { name: "鈴木一郎", status: "maybe" as ParticipationStatus },
+          { name: "山田次郎", status: "unavailable" as ParticipationStatus },
+        ],
+      },
+      {
+        date: "2024-01-15",
+        time: "10:00",
+        participants: [
+          { name: "田中太郎", status: "available" as ParticipationStatus },
+          { name: "佐藤花子", status: "available" as ParticipationStatus },
+          { name: "鈴木一郎", status: "maybe" as ParticipationStatus },
+          { name: "山田次郎", status: "unavailable" as ParticipationStatus },
+        ],
+      },
+      {
+        date: "2024-01-15",
+        time: "10:00",
+        participants: [
+          { name: "田中太郎", status: "available" as ParticipationStatus },
+          { name: "佐藤花子", status: "available" as ParticipationStatus },
+          { name: "鈴木一郎", status: "maybe" as ParticipationStatus },
+          { name: "山田次郎", status: "unavailable" as ParticipationStatus },
+        ],
+      },
+      {
+        date: "2024-01-15",
+        time: "10:00",
+        participants: [
+          { name: "田中太郎", status: "available" as ParticipationStatus },
+          { name: "佐藤花子", status: "available" as ParticipationStatus },
+          { name: "鈴木一郎", status: "maybe" as ParticipationStatus },
+          { name: "山田次郎", status: "unavailable" as ParticipationStatus },
+        ],
+      },
     ] as DateOptionResult[],
   };
 
