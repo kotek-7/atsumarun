@@ -7,8 +7,12 @@ import { TimeTemplateSelector } from "@/features/create/components/TimeTemplateS
 import { DateOptionsList } from "@/features/create/components/DateOptionsList";
 import { EventData } from "@/types/event";
 import { DateOptionWithUI } from "@/features/create/types/dateOptionWithUI";
+import { ja } from "date-fns/locale/ja";
+import { registerLocale } from "react-datepicker";
 
 export default function Create() {
+  registerLocale("ja", ja);
+
   const router = useRouter();
   const [dateOptions, setDateOptions] = useState<DateOptionWithUI[]>([]);
   const [eventData, setEventData] = useState<EventData>({

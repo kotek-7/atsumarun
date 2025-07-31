@@ -118,7 +118,8 @@ export function DateOptionItem({
           }}
           className="focus:ring-primary-500 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:outline-none"
           placeholderText="日付を選択"
-          dateFormat="yyyy/MM/dd"
+          dateFormat="MM/dd (eee)"
+          locale={"ja"}
           required
         />
       </div>
